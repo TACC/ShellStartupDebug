@@ -1,0 +1,103 @@
+#!@path_to_lua@/lua
+-- -*- lua -*-
+-- $Id$ --
+
+local master = {}
+
+function masterTbl()
+   return master
+end
+
+function splitFileName(path)
+   local d, f
+   local i,j = path:find(".*/")
+   if (i == nil) then
+      d = './'
+      f = path
+   else
+      d = path:sub(1,j)
+      f = path:sub(j+1,-1)
+   end
+   return d, f
+end
+
+local execDir = splitFileName(arg[0])
+package.path=execDir .. '/?.lua;' .. package.path
+
+
+require("strict")
+require("CmdLineOptions")
+require("BaseShell")
+require("Output")
+
+function quiet(idx)
+   return idx
+end
+
+function False(idx)
+   return false
+end
+
+function up(idx)
+   return idx + 1
+end
+
+function down(idx)
+   idx = idx - 1
+   if (idx < 0) then idx = 0 end
+   return idx
+end
+
+cmdTbl = {
+   clobber   = False,
+   up        = up,
+   down      = down,
+}
+
+function idx_name()
+   return "__DBG_INDENT_IDX"
+end
+
+function build_indent(cmd)
+   local masterTbl = masterTbl()
+   local idx_name  = idx_name()
+   local idx       = tonumber(os.getenv(idx_name)) or 0
+   local envVarsT  = masterTbl.envVarsT
+
+   local idxCmd       = cmdTbl[cmd] or quiet
+   idx                = idxCmd(idx)
+   envVarsT[idx_name] = idx
+
+   if (type(idx) == 'number' and idx > 0) then
+      envVarsT["DBG_INDENT_FMT"] = "%" .. tostring(idx*2) .. "s"
+      envVarsT["DBG_INDENT_ARG"] = " "
+   else
+      envVarsT["DBG_INDENT_FMT"] = "%s"
+      envVarsT["DBG_INDENT_ARG"] = ""
+   end
+   if (cmd == 'clobber') then
+      envVarsT["SHELL_STARTUP_DEBUG"] = false
+      envVarsT["SHELL_STARTUP_DEBUG_FN"] = false
+   elseif (cmd == 'first') then
+      envVarsT["SHELL_STARTUP_DEBUG_FN"] = false
+   end
+end
+
+function main()
+   local masterTbl = masterTbl()
+   masterTbl.execDir = execDir
+
+   CmdLineOptions:options()
+
+   ------------------------------------------
+   -- Build shell object
+   local shell        = BaseShell.build(masterTbl.shell)
+   masterTbl.envVarsT = {}
+   local cmd          = masterTbl.pargs[1]:lower()
+
+   build_indent(cmd)
+
+   Output(shell,cmd)
+end
+
+main()

@@ -1,0 +1,45 @@
+#!/bin/bash
+# -*- shell-script -*-
+VERSION=`lua -l src/Version -e "print(Version.name())" | awk '{print $1}'` 
+echo Making Version: $VERSION
+
+
+processCmdA()
+{
+  prefixA=${!1}
+  cmdA=${!2}
+
+  for p in "${prefixA[@]}"; do
+    prefix=`expr "$p" : '\(.*\):'`
+    SUDO=`expr "$p" : '.*:\(.*\)'`
+
+    for i in "${cmdA[@]}"; do
+      echo ----------------------------------------
+      eval echo "$i"
+      echo ----------------------------------------
+    
+      eval $i
+    done
+    echo
+  done
+
+
+
+}
+
+host=$(expr $(hostname) : "\([^.][^.]*\)")
+
+case $host in
+    mclay-d630 | mijo | jedrik | vato )
+	prefixA=("/vol/pkg:sudo" "$HOME/l/pkg:") ;;
+    *)
+	prefixA=("$HOME/l/pkg:");;
+esac
+
+cmdA=( "make distclean"
+       './configure --prefix=$prefix'
+       '$SUDO make install'
+       "make distclean"
+      )
+
+processCmdA prefixA cmdA

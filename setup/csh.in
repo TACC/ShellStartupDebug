@@ -1,0 +1,31 @@
+#!/bin/csh
+set myShell=`basename $shell`
+
+foreach FILE ( .init.$myShell .init.csh .init.3.csh .init.2.csh .init.1.csh )
+  if ( -f $HOME/$FILE ) then
+    source $HOME/$FILE
+    break
+  endif
+end
+
+unset myShell
+
+set exec_prefix="@PKG@"
+alias DBG_ECHO echo \!*
+
+if ( $?SHELL_STARTUP_DEBUG ) then
+  alias DBG_INDENT_FUNC 'eval `'$exec_prefix'/libexec/DBG_INDENT_cmd -s csh \!*`;set DBG_INDENT="`printf $DBG_INDENT_FMT $DBG_INDENT_ARG`"'
+  if ( $SHELL_STARTUP_DEBUG > 2 ) then
+    unalias DBG_ECHO
+    alias   DBG_ECHO $exec_prefix/libexec/ECHO_cmd \!*
+  endif
+else
+  alias DBG_INDENT_FUNC true
+endif
+
+unset exec_prefix
+
+# Local Variables:
+# mode: shell-script
+# end:
+

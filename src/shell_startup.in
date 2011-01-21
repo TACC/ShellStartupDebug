@@ -1,0 +1,18 @@
+-- -*- lua -*- 
+local echo_bash       = 'echo() { @PKG@/libexec/ECHO_cmd "$@" ; } ;\n'
+local echo_bash_clear = "unset -f echo > /dev/null 2>&1;\n"
+local echo_csh        = "alias echo '@PKG@/libexec/ECHO_cmd \\!*';\n"
+local echo_csh_clear  = "unalias echo;\n"
+
+echoTbl = {
+   csh_up	= echo_csh,
+   csh_down	= echo_csh,
+   csh_init	= echo_csh,
+   csh_clear	= echo_csh_clear,
+   csh_clobber	= echo_csh_clear,
+   bash_up	= echo_bash,
+   bash_init	= echo_bash,
+   bash_down	= echo_bash,
+   bash_clear	= echo_bash_clear,
+   bash_clobber	= echo_bash_clear,
+}

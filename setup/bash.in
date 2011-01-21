@@ -1,0 +1,44 @@
+#!/bin/bash
+# -*- shell-script -*-
+
+myShell="$SHELL"
+if [ x"$BASH" != x ]; then
+   myShell=$BASH
+fi
+
+myShell=`basename "$myShell"`
+
+for i in .init.$myShell .init.sh .init.3.sh .init.2.sh .init.1.sh; do
+  if [ -f $HOME/$i ]; then
+    . $HOME/$i
+    break
+  fi
+done
+
+unset myShell
+
+DBG_ECHO()
+{
+  echo "$@"
+}
+
+if [ -n "$SHELL_STARTUP_DEBUG" ]; then
+  DBG_INDENT_FUNC()
+  {
+    eval `@PKG@/libexec/DBG_INDENT_cmd -s bash "$@"`;
+    DBG_INDENT=$(printf $DBG_INDENT_FMT "$DBG_INDENT_ARG");
+  }   
+  if [[ $SHELL_STARTUP_DEBUG > 2 ]]; then
+    DBG_ECHO()
+    {
+      @PKG@/libexec/ECHO_cmd "$@"
+    }
+  fi
+else
+  DBG_INDENT_FUNC()
+  {
+    true
+  }
+fi
+
+   

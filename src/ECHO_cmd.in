@@ -1,0 +1,58 @@
+#!@path_to_lua@/lua
+-- -*- lua -*-
+-- $Id$ --
+
+function splitFileName(path)
+   local d, f
+   local i,j = path:find(".*/")
+   if (i == nil) then
+      d = './'
+      f = path
+   else
+      d = path:sub(1,j)
+      f = path:sub(j+1,-1)
+   end
+   return d, f
+end
+
+local execDir = splitFileName(arg[0])
+package.path=execDir .. '?.lua;' .. package.path
+
+require("strict")
+require("fileOps")
+require("posix")
+
+local getenv = os.getenv
+
+function main()
+
+   if (#arg == 0) then return end
+
+   local dfltFn  = pathJoin(getenv("HOME"),"SHELL_STARTUP.log")
+
+   local ssdFn   = getenv("SHELL_STARTUP_DEBUG_FN") or dfltFn
+   local f       = io.open(ssdFn, "r")
+   local prtDate = false
+   if (f == nil) then
+      prtDate = true
+   end
+   f             = io.open(ssdFn, "a")
+
+   ---------------------------------------------------------
+   -- if you can not open a file then do not print anything.
+   if (f == nil) then return end
+
+   if (prtDate) then
+      f:write("--------------------------------------------\n")
+      f:write(os.date(),"\n")
+      f:write("--------------------------------------------\n")
+   end
+
+   for _,v in ipairs(arg) do
+      f:write(v)
+   end
+   f:write("\n")
+   f:close()
+end
+
+main()
