@@ -9,7 +9,7 @@ PKG		:= $(prefix)/$(package)/$(package)
 LIBEXEC		:= $(prefix)/$(package)/$(version)/libexec
 INIT		:= $(prefix)/$(package)/$(version)/init
 
-DIRLIST		:= $(LIBEXEC) $(INIT)
+DIRLIST		:= $(DESTDIR)$(LIBEXEC) $(DESTDIR)$(INIT)
 
 SHELL_INIT	:= bash.in csh.in ksh.in tcsh.in zsh.in sh.in
 SHELL_INIT	:= $(patsubst %, setup/%, $(SHELL_INIT))
@@ -67,7 +67,7 @@ rc_files: $(INIT_FILES)
 	$(MAKE) INSTALL_LIST="$^" INSTALL_DIR=$(LIBEXEC) EXT=".rc" __install_me
 
 libexec:  $(lua_code)
-	cp $^ $(LIBEXEC)
+	cp $^ $(DESTDIR)$(LIBEXEC)
 
 makefile: Makefile.in config.status
 	./config.status
@@ -142,14 +142,13 @@ clobber: clean
 distclean: clobber
 	$(RM) makefile config.status
 
-svntag:
+gittag:
         ifneq ($(TAG),)
 	  $(RM)                                           	   $(VERSION_SRC);   \
 	  echo "module('Version')"                              >  $(VERSION_SRC);   \
 	  echo 'function name() return "'$(TAG) $(VDATE)'" end' >> $(VERSION_SRC);   \
-	  svn ci -m'moving to TAG_VERSION $(TAG)'         	   $(VERSION_SRC);   \
-          SVN=`svn info | grep "Repository Root" | sed -e 's/Repository Root: //'`;  \
-	  svn cp -m'moving to TAG_VERSION $(TAG)' $$SVN/trunk $$SVN/tags/$(TAG)
+	  git commit -m 'moving to TAG_VERSION $(TAG)'         	   $(VERSION_SRC);   \
+          git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'                   ;   
         else
-	  @echo "To svn tag do: make svntag TAG=?"
+	  @echo "To git tag do: make gittag TAG=?"
         endif
