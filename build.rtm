@@ -31,7 +31,7 @@ host=$(expr $(hostname) : "\([^.][^.]*\)")
 
 case $host in
     mclay-d630 | mijo | jedrik | vato )
-	prefixA=("/vol/pkg:sudo" "$HOME/l/pkg:") ;;
+	prefixA=("/opt/apps:sudo" "$HOME/l/pkg:") ;;
     *)
 	prefixA=("$HOME/l/pkg:");;
 esac
