@@ -1,6 +1,5 @@
 #!@path_to_lua@/lua
 -- -*- lua -*-
--- $Id$ --
 
 function splitFileName(path)
    local d, f
@@ -20,8 +19,7 @@ package.path=execDir .. '?.lua;' .. package.path
 
 require("strict")
 require("fileOps")
-require("posix")
-
+local posix  = require("posix")
 local getenv = os.getenv
 
 function main()

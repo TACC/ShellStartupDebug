@@ -1,4 +1,3 @@
--- $Id: CmdLineOptions.lua 194 2008-06-25 21:43:50Z mclay $ --
 local setmetatable = setmetatable
 local arg          = arg
 local pairs        = pairs
@@ -9,11 +8,10 @@ local require      = require
 local systemG      = _G
 local format       = string.format
 
-CmdLineOptions = {}
-require("Version")
+local Version      = require("Version")
 local version      = Version.name
+local M            = {}
 
-module("CmdLineOptions")
 local s_CmdLineOptions = {}
 
 local function new(self)
@@ -25,7 +23,7 @@ local function new(self)
    return o
 end
 
-function  options(self)
+function  M.options(self)
    if ( next(s_CmdLineOptions) ) then return s_CmdLineOptions end
 
    s_CmdLineOptions = new(self)
@@ -67,3 +65,5 @@ function  options(self)
    
    return s_CmdLineOptions
 end
+
+return M

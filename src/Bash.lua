@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id: Bash.lua 194 2008-06-25 21:43:50Z mclay $
 local BaseShell = BaseShell
 local io        = io
 local pairs     = pairs
@@ -9,11 +8,7 @@ Bash	        = inheritsFrom(BaseShell)
 Bash.my_name    = 'bash'
 local systemG   = _G
 
-local Bash   = Bash
-
-module("Bash")
-
-function expand(self, tbl)
+function Bash.expand(self, tbl)
 
    for k in pairs(tbl) do
       local v     = tbl[k]
@@ -35,3 +30,5 @@ function expand(self, tbl)
       end
    end
 end
+
+return Bash

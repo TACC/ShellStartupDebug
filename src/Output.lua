@@ -7,7 +7,8 @@ require("string_trim")
 local getenv = os.getenv
 local io     = io
 
-require("BaseShell")
+local BaseShell = require("BaseShell")
+local posix     = require("posix")
 
 function DATEString()
    local ymd  = os.date("*t")

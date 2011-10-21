@@ -1,5 +1,4 @@
 -- -*- lua -*-
--- $Id: Csh.lua 194 2008-06-25 21:43:50Z mclay $
 
 local BaseShell = BaseShell
 local assert    = assert
@@ -13,9 +12,7 @@ local systemG   = _G
 Csh             = inheritsFrom(BaseShell)
 Csh.my_name     = 'csh'
 
-module("Csh")
-
-function expand(self,tbl)
+function Csh.expand(self,tbl)
    for k in pairs(tbl) do
       local v = tbl[k]
       if (v == false) then
@@ -26,7 +23,7 @@ function expand(self,tbl)
    end
 end
 
-function echo_cmd(self,cmd)
+function Csh.echo_cmd(self,cmd)
    local masterTbl = masterTbl()
    local execDir   = masterTbl.execDir
    assert(loadfile(pathJoin(execDir,"shell_startup.rc")))()
@@ -38,3 +35,5 @@ function echo_cmd(self,cmd)
       io.stdout:write(s)
    end
 end
+
+return Csh
