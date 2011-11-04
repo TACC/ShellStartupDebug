@@ -1,3 +1,5 @@
+require("strict")
+require("fileOps")
 local setmetatable = setmetatable
 local arg          = arg
 local pairs        = pairs
@@ -62,7 +64,9 @@ function  M.options(self)
       masterTbl[v] = optionTbl[v]
    end
    masterTbl.pargs = pargs
-   
+   masterTbl.shell = barefilename(masterTbl.shell)
+
+
    return s_CmdLineOptions
 end
 
