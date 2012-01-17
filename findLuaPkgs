@@ -1,6 +1,9 @@
 #!/usr/bin/env lua
 -- -*- lua -*-
-require("strict")
+--require("strict")
+local luaV   = _VERSION:gsub("Lua ","")
+package.path = "/opt/apps/projectsLua/projectsLua/share/" .. luaV .. "/?.lua;" .. package.path
+
 function string:split(pat)
    local st, g = 1, self:gmatch("()("..pat..")")
    local function getter(self, segs, seps, sep, cap1, ...)
@@ -17,17 +20,19 @@ end
 
 function main()
 
+   local a = {}
    for _,v in ipairs(arg) do
       for path in package.path:split(";") do
          local s = path:gsub("?",v)
          local f = io.open(s,"r")
          if (f) then
             f:close()
-            print(s)
+            a[#a+1] = s
             break;
          end
       end
    end 
+   print (table.concat(a," "))
 end
 
 main()
