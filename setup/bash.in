@@ -22,7 +22,7 @@ if [ -n "$SHELL_STARTUP_DEBUG" ]; then
     eval `@PKG@/libexec/DBG_INDENT_cmd -s bash "$@"`;
     DBG_INDENT=$(printf $DBG_INDENT_FMT "$DBG_INDENT_ARG");
   }   
-  if [[ $SHELL_STARTUP_DEBUG > 2 ]]; then
+  if [ -n "$SHELL_STARTUP_DEBUG" ] && [ $SHELL_STARTUP_DEBUG -gt 2 ]; then
     DBG_ECHO()
     {
       @PKG@/libexec/ECHO_cmd "$@"
