@@ -14,7 +14,7 @@ DIRLIST		:= $(DESTDIR)$(LIBEXEC) $(DESTDIR)$(INIT)
 SHELL_INIT	:= bash.in csh.in ksh.in tcsh.in zsh.in sh.in
 SHELL_INIT	:= $(patsubst %, setup/%, $(SHELL_INIT))
 
-MAIN_DIR	:= Makefile.in configure
+MAIN_DIR	:= Makefile.in configure findLuaPkgs
 
 lua_code	:= $(wildcard src/*.lua) src/COPYRIGHT 
 VDATE		:= $(shell date +'%F %H:%M')
@@ -22,7 +22,7 @@ VDATE		:= $(shell date +'%F %H:%M')
 REQUIRED_PKGS	:= BeautifulTbl ColumnTable hash Optiks Optiks_Option strict fileOps \
                    string_split serialize pairsByKeys string_trim inherits capture Dbg
 
-LUA_PKGS        := $(shell ./findLuaPkgs $(REQUIRED_PKGS))
+LUA_PKGS        := 
 LIBEXEC_CMDS    := $(patsubst %, src/%, DBG_INDENT_cmd.in ECHO_cmd.in)
 INIT_FILES      := $(patsubst %, src/%, shell_startup.in)
 
@@ -33,8 +33,8 @@ all:
 	@echo done
 
 install: $(DIRLIST) reqPkgs startup libexec libexec_cmds rc_files
-	$(RM) $(PKG)
-	ln -s $(version) $(PKG)
+	$(RM) $(DESTDIR)$(PKG)
+	ln -s $(version) $(DESTDIR)$(PKG)
 
 echo:
 	@echo Version: $(version)
@@ -61,7 +61,7 @@ __echo_me:
 	@echo INSTALL_LIST: $(INSTALL_LIST)
 
 reqPkgs:
-	cp $(LUA_PKGS) $(DESTDIR)$(LIBEXEC)
+	cp $(shell ./findLuaPkgs $(REQUIRED_PKGS)) $(DESTDIR)$(LIBEXEC)
 
 startup: $(SHELL_INIT)
 	$(MAKE) INSTALL_LIST="$^" INSTALL_DIR=$(INIT) __install_me

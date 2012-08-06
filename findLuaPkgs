@@ -2,7 +2,8 @@
 -- -*- lua -*-
 --require("strict")
 local luaV   = _VERSION:gsub("Lua ","")
-package.path = "/opt/apps/projectsLua/projectsLua/share/" .. luaV .. "/?.lua;" .. package.path
+package.path = "/opt/apps/luatools/luatools/share/" .. luaV .. "/?.lua;" .. package.path
+package.path = "./src/?.lua;" .. package.path
 
 function string:split(pat)
    local st, g = 1, self:gmatch("()("..pat..")")
