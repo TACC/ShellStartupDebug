@@ -17,7 +17,7 @@ function Bare.expand(self,tbl)
    end
 
    local bt = BeautifulTbl:new(t)
-   bt:print_tbl()
+   io.stdout:write(bt:build_tbl(),"\n")
 end
 
 return Bare
