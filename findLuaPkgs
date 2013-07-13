@@ -20,15 +20,16 @@ end
 
 
 function main()
-
    local a = {}
    for _,v in ipairs(arg) do
+      local result=""
       for path in package.path:split(";") do
          local s = path:gsub("?",v)
          local f = io.open(s,"r")
          if (f) then
             f:close()
             a[#a+1] = s
+            result = s
             break;
          end
       end

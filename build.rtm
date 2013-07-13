@@ -39,7 +39,7 @@ esac
 cmdA=( "make distclean"
        './configure --prefix=$prefix'
        '$SUDO make install'
-       "make distclean"
+       "make clobber"
       )
 
 processCmdA prefixA cmdA

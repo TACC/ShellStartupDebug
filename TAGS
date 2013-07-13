@@ -1,0 +1,79 @@
+
+makefile,56
+PATH_TO_LUA	2,7
+version		:= $(shell cd ./src; $(7,167
+
+src/BaseShell.lua,113
+function M.name(22,448
+local function valid_shell(27,514
+function M.build(34,670
+function M.echo_cmd(54,1176
+
+src/DBG_INDENT_cmd.in,223
+function masterTbl(7,66
+function splitFileName(11,109
+function quiet(32,530
+function False(36,569
+function up(40,610
+function down(44,650
+function idx_name(56,814
+function build_indent(60,868
+function main(85,1629
+
+src/Output.lua,52
+function DATEString(13,237
+function Output(23,510
+
+src/shell_startup.in,22
+local echo_bash 2,16
+
+src/CmdLineOptions.lua,55
+local function new(19,421
+function  M.options(28,528
+
+src/Version.lua,22
+function M.name(3,31
+
+src/Bare.lua,29
+function Bare.expand(12,227
+
+src/Csh.lua,58
+function Csh.expand(15,285
+function Csh.echo_cmd(26,508
+
+src/Bash.lua,29
+function Bash.expand(11,223
+
+src/ECHO_cmd.in,51
+function splitFileName(4,36
+function main(25,432
+
+build.rtm,76
+VERSION=3,35
+processCmdA(7,172
+host=30,525
+	prefixA=36,676
+cmdA=39,710
+
+configure.ac,51
+dnl $Id: configure.ac,ac2,75
+PATH_TO_LUA=15,488
+
+Makefile.in,56
+PATH_TO_LUA	2,7
+version		:= $(shell cd ./src; $(7,158
+
+findLuaPkgs,52
+function string:string8,230
+function main(22,588
+
+setup/csh.in,18
+set myShell=2,11
+
+setup/bash.in,84
+DBG_ECHO(4,36
+DBG_INDENT_FUNC(9,64
+  DBG_INDENT_FUNC(20,188
+    DBG_ECHO(26,408
+
+src/COPYRIGHT,0
