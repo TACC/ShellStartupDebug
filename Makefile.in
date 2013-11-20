@@ -23,7 +23,7 @@ VDATE		:= $(shell date +'%F %H:%M')
 
 LUA_PKGS        := 
 LIBEXEC_CMDS    := $(patsubst %, src/%, DBG_INDENT_cmd.in ECHO_cmd.in)
-INIT_FILES      := $(patsubst %, src/%, shell_startup.in)
+INIT_FILES      := $(patsubst %, src/%, shell_startup.rc.in)
 
 
 .PHONY: test
@@ -52,7 +52,7 @@ $(DIRLIST) :
 
 
 __install_me: $(INSTALL_LIST)
-	for i in $^; do                                           	 \
+	-for i in $^; do                                           	 \
           bareN=$${i##*/};                                        	 \
           fn=$${bareN%%.in*};                                     	 \
           ext=$${bareN#*.};                                       	 \
@@ -60,7 +60,7 @@ __install_me: $(INSTALL_LIST)
 	      -e 's|@path_to_lua@|$(PATH_TO_LUA)|g'               	 \
               -e 's|@git@|$(GIT_VERSION)|g'                       	 \
               -e 's|@PKG@|$(PKG)|g'         < $$i > $(DIRLOC)/$$fn;   	 \
-          [ "$$ext" = "in" ] && chmod +x $(DIRLOC)/$$fn;                 \
+          if [ "$$ext" = "in" ];  then chmod +x $(DIRLOC)/$$fn;  fi      \
         done
 
 __echo_me:
@@ -80,7 +80,7 @@ libexec_cmds: $(LIBEXEC_CMDS)
 	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
 
 rc_files: $(INIT_FILES)
-	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) EXT=".rc" __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
 
 libexec:  $(lua_code)
 	cp $^ $(DESTDIR)$(LIBEXEC)
@@ -120,7 +120,7 @@ _distMF:
 	find $(DistD)/mf -name .svn | xargs rm -rf 
 
 _distTar:
-	echo "shell_startup"-$(version) > .fname;                	   \
+	echo "shell_startup_debug"-$(version) > .fname;                	   \
 	$(RM) -r `cat .fname` `cat .fname`.tar*;         		   \
 	mv ${DistD} `cat .fname`;                            		   \
 	tar chf `cat .fname`.tar `cat .fname`;           		   \
