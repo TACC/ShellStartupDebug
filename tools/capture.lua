@@ -1,15 +1,6 @@
---------------------------------------------------------------------------
--- shell_startup_debug License
---------------------------------------------------------------------------
+------------------------------------------------------------------------
 --
---  shell_startup_debug is licensed under the terms of the MIT license 
---  reproduced below. This means that shell_startup_debug  is free software 
---  and can be used for both academic and commercial purposes at absolutely
---  no cost.
---
---  ----------------------------------------------------------------------
---
---  Copyright (C) 2013 Robert McLay
+--  Copyright (C) 2008-2013 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -33,23 +24,30 @@
 --
 --------------------------------------------------------------------------
 
-local BeautifulTbl = require ('BeautifulTbl')
-local BaseShell	   = BaseShell
-local pairs	   = pairs
+--------------------------------------------------------------------------
+-- Capture:  use io.popen to open a pipe to collect the output of a
+--           command.  
 
-Bare	     = inheritsFrom(BaseShell)
-Bare.my_name = 'bare'
+require("strict")
 
-
-function Bare.expand(self,tbl)
-   local t = {}
-   for k in pairs(tbl) do
-      local v = tbl[k]
-      t[#t + 1] = {k, '"'..v..'"'}
+local dbg   = require("Dbg"):dbg()
+local posix = require("posix")
+function capture(cmd,level)
+   level        = level or 1
+   local level2 = level or 2
+   dbg.start(level, "capture")
+   dbg.print("cwd: ",posix.getcwd(),"\n")
+   dbg.print("cmd: ",cmd,"\n")
+   local p = io.popen(cmd)
+   if p == nil then
+      return nil
    end
-
-   local bt = BeautifulTbl:new(t)
-   io.stdout:write(bt:build_tbl(),"\n")
+   local ret = p:read("*all")
+   p:close()
+   dbg.start(level2,"capture output")
+   dbg.print(ret)
+   dbg.fini()
+   dbg.fini()
+   return ret
 end
 
-return Bare

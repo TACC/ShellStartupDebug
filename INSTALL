@@ -1,0 +1,28 @@
+Shell_Startup_Debug tracks the startup scripts loaded from /etc/profile.d
+
+
+A)  You must install lua first.  You have two choices:
+
+      1) You can download the latest lua version from  the same place you got
+         Lmod and install lua-X.X.X.tar.gz file.  It contains the lua command,
+         lua library and other lua packages that  Lmod requires
+
+  OR:
+
+      2) Use the package system for your OS to install the following packages.
+         This is the list is for Ubuntu 8.04.  It may be quite different with
+         other Linux distributions or different OS
+
+            liblua5.1-0
+            liblua5.1-0-dev
+            liblua5.1-filesystem-dev
+            liblua5.1-filesystem0
+            liblua5.1-posix-dev
+            liblua5.1-posix0
+            lua5.1
+
+      Lmod requires Lua 5.1 or 5.2
+
+         ***** Lua 5.0 or 4.0 will NOT work. *****
+
+B)          

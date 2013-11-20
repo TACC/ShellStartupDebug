@@ -1,15 +1,6 @@
---------------------------------------------------------------------------
--- shell_startup_debug License
---------------------------------------------------------------------------
+------------------------------------------------------------------------
 --
---  shell_startup_debug is licensed under the terms of the MIT license 
---  reproduced below. This means that shell_startup_debug  is free software 
---  and can be used for both academic and commercial purposes at absolutely
---  no cost.
---
---  ----------------------------------------------------------------------
---
---  Copyright (C) 2013 Robert McLay
+--  Copyright (C) 2008-2013 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -33,23 +24,16 @@
 --
 --------------------------------------------------------------------------
 
-local BeautifulTbl = require ('BeautifulTbl')
-local BaseShell	   = BaseShell
-local pairs	   = pairs
+--------------------------------------------------------------------------
+-- string:trim(): remove leading and trailing spaces.
 
-Bare	     = inheritsFrom(BaseShell)
-Bare.my_name = 'bare'
-
-
-function Bare.expand(self,tbl)
-   local t = {}
-   for k in pairs(tbl) do
-      local v = tbl[k]
-      t[#t + 1] = {k, '"'..v..'"'}
+function string:trim()
+   local ja = self:find("%S")
+   if (ja == nil) then
+      return ""
    end
-
-   local bt = BeautifulTbl:new(t)
-   io.stdout:write(bt:build_tbl(),"\n")
+   local  jb = self:find("%s+$") or 0
+   local  s  = self:sub(ja,jb-1)
+   return s
 end
 
-return Bare

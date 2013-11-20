@@ -2,14 +2,16 @@
 PATH_TO_LUA	:= @PATH_TO_LUA@
 VERSION_SRC	:= src/Version.lua
 VERSION_LIB	:= $(subst .lua,,$(VERSION_SRC))
+GIT_VERSION     := $(shell if [ -n "$(GIT_PROG)" ]; then ssdV=`git describe --always`; echo "($$ssdV)"; fi)
 prefix		:= @prefix@
-package		:= shell_startup
-version		:= $(shell cd ./src; $(PATH_TO_LUA)/lua -e "local Version=require('Version'); print(Version.name())" | awk '{print $$1}')
+package		:= shell_startup_debug
+version		:= $(shell cd ./src; $(PATH_TO_LUA)/lua -e "V=require('Version'); print(V.tag())")
 PKG		:= $(prefix)/$(package)/$(package)
 LIBEXEC		:= $(prefix)/$(package)/$(version)/libexec
+TOOLS		:= $(prefix)/$(package)/$(version)/tools
 INIT		:= $(prefix)/$(package)/$(version)/init
 
-DIRLIST		:= $(DESTDIR)$(LIBEXEC) $(DESTDIR)$(INIT)
+DIRLIST		:= $(DESTDIR)$(LIBEXEC) $(DESTDIR)$(INIT) $(DESTDIR)$(TOOLS)
 
 SHELL_INIT	:= bash.in csh.in ksh.in tcsh.in zsh.in sh.in
 SHELL_INIT	:= $(patsubst %, setup/%, $(SHELL_INIT))
@@ -18,9 +20,6 @@ MAIN_DIR	:= Makefile.in configure findLuaPkgs
 
 lua_code	:= $(wildcard src/*.lua) src/COPYRIGHT 
 VDATE		:= $(shell date +'%F %H:%M')
-
-REQUIRED_PKGS	:= BeautifulTbl ColumnTable Optiks Optiks_Option strict fileOps \
-                   string_split pairsByKeys string_trim inherits capture Dbg
 
 LUA_PKGS        := 
 LIBEXEC_CMDS    := $(patsubst %, src/%, DBG_INDENT_cmd.in ECHO_cmd.in)
@@ -32,9 +31,15 @@ INIT_FILES      := $(patsubst %, src/%, shell_startup.in)
 all:
 	@echo done
 
-install: $(DIRLIST) reqPkgs startup libexec libexec_cmds rc_files
+pre-install: $(DIRLIST) startup libexec libexec_cmds rc_files Inst_tools
+
+install: pre-install
 	$(RM) $(DESTDIR)$(PKG)
 	ln -s $(version) $(DESTDIR)$(PKG)
+
+Inst_tools: tools/*.lua
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(DESTDIR)$(TOOLS) __install_me
+
 
 echo:
 	@echo Version: $(version)
@@ -47,14 +52,15 @@ $(DIRLIST) :
 
 
 __install_me: $(INSTALL_LIST)
-	for i in $^; do                                           \
-	  fn=`basename $$i .in`;                                  \
-	  fn="$$fn$(EXT)";                                        \
-          sed -e 's|@PREFIX@|@prefix@|g'                          \
-	      -e 's|@path_to_lua@|$(PATH_TO_LUA)|g'               \
-              -e 's|@PKG@|$(PKG)|g'         < $$i > $$fn;         \
-          chmod +x $$fn;                                          \
-          mv $$fn      $(DESTDIR)$(INSTALL_DIR);                  \
+	for i in $^; do                                           	 \
+          bareN=$${i##*/};                                        	 \
+          fn=$${bareN%%.in*};                                     	 \
+          ext=$${bareN#*.};                                       	 \
+          sed -e 's|@PREFIX@|@prefix@|g'                          	 \
+	      -e 's|@path_to_lua@|$(PATH_TO_LUA)|g'               	 \
+              -e 's|@git@|$(GIT_VERSION)|g'                       	 \
+              -e 's|@PKG@|$(PKG)|g'         < $$i > $(DIRLOC)/$$fn;   	 \
+          [ "$$ext" = "in" ] && chmod +x $(DIRLOC)/$$fn;                 \
         done
 
 __echo_me:
@@ -67,14 +73,14 @@ reqPkgs:
         done
 
 startup: $(SHELL_INIT)
-	$(MAKE) INSTALL_LIST="$^" INSTALL_DIR=$(INIT) __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(INIT) __install_me
 
 
 libexec_cmds: $(LIBEXEC_CMDS)
-	$(MAKE) INSTALL_LIST="$^" INSTALL_DIR=$(LIBEXEC) __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
 
 rc_files: $(INIT_FILES)
-	$(MAKE) INSTALL_LIST="$^" INSTALL_DIR=$(LIBEXEC) EXT=".rc" __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) EXT=".rc" __install_me
 
 libexec:  $(lua_code)
 	cp $^ $(DESTDIR)$(LIBEXEC)
@@ -162,13 +168,29 @@ distclean: clobber
 
 gittag:
         ifneq ($(TAG),)
-	  $(RM)                                             	     $(VERSION_SRC); \
-	  echo "--module('Version')"                              >  $(VERSION_SRC); \
-	  echo 'local M={}'                                       >> $(VERSION_SRC); \
-	  echo 'function M.name() return "'$(TAG) $(VDATE)'" end' >> $(VERSION_SRC); \
-	  echo 'return M'                                         >> $(VERSION_SRC); \
-	  git commit -m 'moving to TAG_VERSION $(TAG)'         	     $(VERSION_SRC); \
-          git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'                     ;   
+	  @git status -s > /tmp/ssd$$$$;                                             \
+          if [ -s /tmp/ssd$$$$ ]; then                                               \
+	    echo "All files not checked in => try again";                            \
+	  else                                                                       \
+	    $(RM)                                                    $(VERSION_SRC); \
+	    echo "--module('Version')"                            >  $(VERSION_SRC); \
+	    echo 'local M={}'                                     >> $(VERSION_SRC); \
+	    echo 'function M.tag()  return "$(TAG)"   end'        >> $(VERSION_SRC); \
+	    echo 'function M.git()  return "@git@"    end'        >> $(VERSION_SRC); \
+	    echo 'function M.date() return "$(VDATE)" end'        >> $(VERSION_SRC); \
+	    echo 'function M.name()'                              >> $(VERSION_SRC); \
+            echo '  local a = {}'                                 >> $(VERSION_SRC); \
+	    echo '  a[#a+1] = M.tag()'                            >> $(VERSION_SRC); \
+	    echo '  a[#a+1] = M.git()'                            >> $(VERSION_SRC); \
+	    echo '  a[#a+1] = M.date()'                           >> $(VERSION_SRC); \
+	    echo '  return table.concat(a," ")'                   >> $(VERSION_SRC); \
+	    echo 'end'                                            >> $(VERSION_SRC); \
+	    echo 'return M'                                       >> $(VERSION_SRC); \
+            git commit -m "moving to TAG_VERSION $(TAG)"             $(VERSION_SRC); \
+            git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'                   ; \
+	    git push --tags                                                        ; \
+          fi;                                                                        \
+          rm -f /tmp/ssd$$$$
         else
 	  @echo "To git tag do: make gittag TAG=?"
         endif

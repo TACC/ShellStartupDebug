@@ -1,14 +1,10 @@
 #!/bin/csh
 set myShell=`basename $shell`
 
-foreach FILE ( .init.$myShell .init.csh .init.3.csh .init.2.csh .init.1.csh )
-  if ( -f $HOME/$FILE ) then
-    source $HOME/$FILE
-    break
-  endif
+if ( -f $HOME/.init.csh ) then
+  source $HOME/.init.csh
 end
 
-unset myShell
 
 set exec_prefix="@PKG@"
 alias DBG_ECHO echo \!*
