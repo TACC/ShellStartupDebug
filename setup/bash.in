@@ -3,12 +3,12 @@
 
 DBG_ECHO()
 {
-  if [ "$1" != "}" ]; then
-    echo "$@"
-  else
-    SHELL_STARTUP_DEBUG_T1=$(epoch)
+  if [[ $1 =~ \} ]]; then
+    SHELL_STARTUP_DEBUG_T1=$(@PKG@/libexec/epoch)
     SHELL_STARTUP_DEBUG_RT=$(builtin echo "$SHELL_STARTUP_DEBUG_T1 - $SHELL_STARTUP_DEBUG_T0" | bc -q )
     echo "$@" " Time = $SHELL_STARTUP_DEBUG_RT"
+  else
+    echo "$@"
   fi
 }
 
@@ -19,7 +19,7 @@ DBG_INDENT_FUNC()
 
 if [ -f $HOME/.init.sh ]; then
   . $HOME/.init.sh
-  SHELL_STARTUP_DEBUG_T0=$(epoch)
+  export SHELL_STARTUP_DEBUG_T0=$(@PKG@/libexec/epoch)
 fi
 
 

@@ -54,6 +54,7 @@ package.path = LuaCommandName_dir .. "../tools/?.lua;" ..
 
 require("strict")
 require("fileOps")
+require("capture")
 local posix  = require("posix")
 local getenv = os.getenv
 
@@ -80,9 +81,15 @@ function main()
       f:write(os.date(),"\n")
       f:write("--------------------------------------------\n")
    end
-
-   for _,v in ipairs(arg) do
-      f:write(v)
+   local T0 = tonumber(getenv("SHELL_STARTUP_DEBUG_T0"))
+   for i,v in ipairs(arg) do
+      if ( i == 1 and v:find("}")) then
+         local T1 = tonumber(capture("@PKG@/libexec/epoch"))
+         local s  = string.format("%.4f",T1 - T0)
+         f:write(v," Time = ",s)
+      else
+         f:write(v)
+      end
    end
    f:write("\n")
    f:close()
