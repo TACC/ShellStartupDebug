@@ -118,7 +118,7 @@ end
 
 function main()
    local masterTbl = masterTbl()
-   masterTbl.execDir = execDir
+   masterTbl.execDir = LuaCommandName_dir
 
    CmdLineOptions:options()
 

@@ -16,13 +16,13 @@ DIRLIST		:= $(DESTDIR)$(LIBEXEC) $(DESTDIR)$(INIT) $(DESTDIR)$(TOOLS)
 SHELL_INIT	:= bash.in csh.in ksh.in tcsh.in zsh.in sh.in
 SHELL_INIT	:= $(patsubst %, setup/%, $(SHELL_INIT))
 
-MAIN_DIR	:= Makefile.in configure findLuaPkgs
+MAIN_DIR	:= Makefile.in configure README INSTALL
 
-lua_code	:= $(wildcard src/*.lua) src/COPYRIGHT 
+lua_code	:= $(wildcard src/*.lua) 
 VDATE		:= $(shell date +'%F %H:%M')
 
 LUA_PKGS        := 
-LIBEXEC_CMDS    := $(patsubst %, src/%, DBG_INDENT_cmd.in ECHO_cmd.in)
+LIBEXEC_CMDS    := $(patsubst %, src/%, DBG_INDENT_cmd.in ECHO_cmd.in epoch.in)
 INIT_FILES      := $(patsubst %, src/%, shell_startup.rc.in)
 
 
@@ -66,11 +66,6 @@ __install_me: $(INSTALL_LIST)
 __echo_me:
 	@echo INSTALL_LIST: $(INSTALL_LIST)
 
-reqPkgs:
-	REQUIRED_PKGS=`$(PATH_TO_LUA)/lua ./findLuaPkgs $(REQUIRED_PKGS)`; \
-	for i in $$REQUIRED_PKGS; do                                   	   \
-           cp $$i $(DESTDIR)$(LIBEXEC);                                	   \
-        done
 
 startup: $(SHELL_INIT)
 	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(INIT) __install_me
@@ -94,7 +89,7 @@ config.status:
 dist:  
 	$(MAKE) DistD=DIST _dist
 
-_dist: _distMkDir _distMainDir _distSrc _distSetup _distReqPkg _distTar
+_dist: _distMkDir _distMainDir _distSrc _distSetup _distTools _distTar
 
 _distMkDir:
 	$(RM) -r $(DistD)
@@ -108,11 +103,12 @@ _distSetup:
 	mkdir $(DistD)/setup
 	cp $(SHELL_INIT) $(DistD)/setup
 
+_distTools:
+	mkdir $(DistD)/tools
+	cp tools/*.lua $(DistD)/tools
+
 _distMainDir:
 	cp $(MAIN_DIR) $(DistD)
-
-_distReqPkg:
-	cp `findLuaPkgs $(REQUIRED_PKGS)` $(DistD)/src
 
 _distMF:
 	mkdir $(DistD)/mf

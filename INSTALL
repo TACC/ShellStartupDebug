@@ -4,8 +4,8 @@ Shell_Startup_Debug tracks the startup scripts loaded from /etc/profile.d
 A)  You must install lua first.  You have two choices:
 
       1) You can download the latest lua version from  the same place you got
-         Lmod and install lua-X.X.X.tar.gz file.  It contains the lua command,
-         lua library and other lua packages that  Lmod requires
+         this software and install lua-X.Y.Z.tar.gz file.  It contains the
+         lua command, lua library and other required lua packages.
 
   OR:
 
@@ -15,8 +15,6 @@ A)  You must install lua first.  You have two choices:
 
             liblua5.1-0
             liblua5.1-0-dev
-            liblua5.1-filesystem-dev
-            liblua5.1-filesystem0
             liblua5.1-posix-dev
             liblua5.1-posix0
             lua5.1
@@ -25,4 +23,148 @@ A)  You must install lua first.  You have two choices:
 
          ***** Lua 5.0 or 4.0 will NOT work. *****
 
-B)          
+B) After lua and lua-posix  available you can install shell_startup_debug.
+   if you wish to install this program in /opt/apps/shell_startup_debug/1.4.3
+
+     $ ./configure --prefix=/opt/apps
+
+
+   This will install version 1.4.3 in /opt/apps/shell_startup_debug/1.4.3
+   and make a symbolic link from the version to shell_startup_debug
+
+
+C) Assuming that you are installing version 1.4.3 in /opt/apps/shell_startup_debug/1.4.3
+   then you need to copy or symbolic link two files:
+
+      $ ln -s /opt/apps/shell_startup_debug/shell_startup_debug/init/bash \
+              /etc/profile.d/01_shell_startup_debug.SH
+      $ ln -s /opt/apps/shell_startup_debug/shell_startup_debug/init/csh \
+              /etc/profile.d/01_shell_startup_debug.CSH
+
+D) Make sure a path to lua exists.  Either lua is a standard location such as /usr/bin
+   or /usr/local/bin.  Or create 00_lua.SH and 00_lua.CSH to define the path to lua for
+   both bash and csh.
+
+
+E) Modify /etc/profile:
+
+  1) At the top of /etc/profile add:
+
+      if [ -d /etc/profile.d ]; then
+        for i in /etc/profile.d/*.SH; do
+          if [ -r $i ]; then
+            . $i
+          fi
+        done
+        unset i
+      fi  
+  
+
+  2) Replace the for loop in /etc/profile
+
+        if [ -d /etc/profile.d ]; then
+          for i in /etc/profile.d/*.sh
+            ....
+          done
+        fi
+
+     With:
+
+       DBG_INDENT_FUNC first # force the creation of log file
+       DBG_INDENT_FUNC init
+       MY_NAME="/etc/profile"
+       if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+         echo "$DBG_INDENT$MY_NAME{"
+       fi
+
+       DBG_INDENT_FUNC up
+
+       if [ -d /etc/profile.d ]; then
+         for i in /etc/profile.d/*.sh; do
+           DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
+           if [ -r $i ]; then
+             if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+               DBG_ECHO "$DBG_INDENT$i{"
+             fi
+             . $i
+             if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+               DBG_ECHO "$DBG_INDENT}"
+             fi
+           fi
+         done
+         unset i
+       fi            
+
+  3) Add to the bottom of /etc/profile:
+
+       DBG_INDENT_FUNC down
+
+       if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+         echo "$DBG_INDENT}"
+       fi     
+
+F) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
+
+   1) Add at the top of this file:
+
+       if ! shopt -q login_shell; then
+         if [ -d /etc/profile.d ]; then
+           for i in /etc/profile.d/*.SH; do
+             if [ -r $i ]; then
+               . $i
+             fi
+           done
+           unset i
+         fi
+         DBG_INDENT_FUNC first
+       fi     
+
+  2) Replace the for loop in /etc/bashrc
+
+        if [ -d /etc/profile.d ]; then
+          for i in /etc/profile.d/*.sh
+            ....
+          done
+        fi
+
+     With:
+
+        MY_NAME="/etc/bashrc"
+        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+          echo "$DBG_INDENT$MY_NAME{"
+        fi
+
+
+        if ! shopt -q login_shell; then
+          if [ -d /etc/profile.d ]; then
+            for i in /etc/profile.d/*.sh; do
+              if [ -r $i ]; then
+                if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+                  echo "$DBG_INDENT$i{"
+                fi
+                DBG_INDENT_FUNC clear  # This clears the echo function if it exists
+                . $i
+                DBG_INDENT_FUNC init   # This turns in back on.
+                if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+                  echo "$DBG_INDENT}"
+                fi
+              fi
+            done
+            unset i
+          fi
+        fi      
+
+  3) Add at the bottom:
+
+        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+           echo "$DBG_INDENT}"
+        fi
+
+    Note many /etc/bashrc have line like:
+
+       [ -z "$PS1" ] && return
+
+    please feel free to work around this.
+
+G) Feel free to similarly modify csh.login and csh.cshrc.
+ 
