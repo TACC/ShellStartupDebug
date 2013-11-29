@@ -3,7 +3,9 @@
 
 DBG_ECHO()
 {
-  if [[ $1 =~ \} ]]; then
+  local arg
+  arg=$(echo "$1" | tr -d ' ')
+  if [ "$arg"  = "}" ]; then
     SHELL_STARTUP_DEBUG_T1=$(@PKG@/libexec/epoch)
     SHELL_STARTUP_DEBUG_RT=$(builtin echo "$SHELL_STARTUP_DEBUG_T1 - $SHELL_STARTUP_DEBUG_T0" | bc -q )
     echo "$@" " Time = $SHELL_STARTUP_DEBUG_RT"

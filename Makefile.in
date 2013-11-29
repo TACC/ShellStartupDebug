@@ -1,4 +1,3 @@
-# $Id$
 PATH_TO_LUA	:= @PATH_TO_LUA@
 VERSION_SRC	:= src/Version.lua
 VERSION_LIB	:= $(subst .lua,,$(VERSION_SRC))
