@@ -123,8 +123,15 @@ _distTar:
 	rm -rf `cat .fname` .fname; 
 
 
-test:
-	cd rt; unset TMFuncPATH; tm .
+world_update:
+	@git status -s > /tmp/ssd$$$$;                                             \
+        if [ -s /tmp/ssd$$$$ ]; then                                               \
+            echo "All files not checked in => try again";                          \
+        else                                                                       \
+            git push github;                                                       \
+            git push --tags github;                                                \
+        fi;                                                                        \
+        rm -f /tmp/ssd$$$$
 
 tags:
 	find . \( -regex '.*~$$\|.*/\.git\|.*/\.git/' -prune \)  \
@@ -133,6 +140,7 @@ tags:
             -e 's|.*/rt/.*/t1/.*||g'                             \
             -e 's|./TAGS||g'                                     \
             -e 's|./configure$$||g'                              \
+            -e 's|/.DS_Store||g'                                 \
             -e 's|.*\.tgz$$||g'                                  \
             -e 's|.*\.tar\.gz$$||g'                              \
             -e 's|.*\.tar\.bz2$$||g'                             \
