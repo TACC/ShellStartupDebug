@@ -8,9 +8,9 @@ DBG_ECHO()
   if [ "$arg"  = "}" ]; then
     SHELL_STARTUP_DEBUG_T1=$(@PKG@/libexec/epoch)
     SHELL_STARTUP_DEBUG_RT=$(builtin echo "$SHELL_STARTUP_DEBUG_T1 - $SHELL_STARTUP_DEBUG_T0" | bc -q )
-    echo "$@" " Time = $SHELL_STARTUP_DEBUG_RT"
+    builtin echo "$@" " Time = $SHELL_STARTUP_DEBUG_RT"
   else
-    echo "$@"
+    builtin echo "$@"
   fi
 }
 
