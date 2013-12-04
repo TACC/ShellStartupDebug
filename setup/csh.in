@@ -3,10 +3,11 @@ set myShell=`basename $shell`
 
 if ( -f $HOME/.init.csh ) then
   source $HOME/.init.csh
-end
+endif
 
 
 set exec_prefix="@PKG@"
+unalias DBG_ECHO
 alias DBG_ECHO echo \!*
 
 if ( $?SHELL_STARTUP_DEBUG ) then
