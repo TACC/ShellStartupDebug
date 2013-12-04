@@ -1,9 +1,11 @@
 Shell Startup Debug:
 
-To trace the behavior of the startup scripts on your system use shell_startup_debug.
+To trace the behavior of the startup scripts on your system use
+shell_startup_debug.
 
-Once installed, any user can create a file (~/.init.sh for bash, zsh, etc) and (~/.init.csh
-for csh and tcsh) that will turn on the report of the startup behavior.
+Once installed, any user can create a file (~/.init.sh for bash, zsh, etc) and
+(~/.init.csh for csh and tcsh) that will turn on the report of the startup
+behavior.
 
 Bash users: Please put in ~/.init.sh:
 
