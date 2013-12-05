@@ -1,0 +1,67 @@
+#!/bin/bash
+# -*- shell-script -*-
+# System-wide .profile for sh(1)
+
+if [ -x /usr/libexec/path_helper ]; then
+	eval `/usr/libexec/path_helper -s`
+fi
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.SH; do
+        if [ -r $i ]; then
+          . $i
+        fi
+      done
+      unset i
+    fi
+
+    DBG_INDENT_FUNC first # force the creation of log file
+    DBG_INDENT_FUNC init
+    MY_NAME="/etc/profile"
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      echo "$DBG_INDENT$MY_NAME{"
+    fi
+
+    DBG_INDENT_FUNC up
+
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.sh; do
+        DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
+        if [ -r $i ]; then
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT$i{"
+          fi
+          . $i
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT}"
+          fi
+        fi
+      done
+      unset i
+    fi  
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################
+
+if [ "${BASH-no}" != "no" ]; then
+	[ -r /etc/bashrc ] && . /etc/bashrc
+fi
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+
+    DBG_INDENT_FUNC down
+
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      DBG_ECHO "$DBG_INDENT}"
+    fi  
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################

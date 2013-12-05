@@ -1,0 +1,34 @@
+#!/bin/zsh
+# -*- shell-script -*-
+# /etc/zsh/zlogin: system-wide .zlogin file for zsh(1).
+#
+# This file is sourced only for login shells. It
+# should contain commands that should be executed only
+# in login shells. It should be used to set the terminal
+# type and run a series of external commands (fortune,
+# msgs, from, etc.)
+#
+# Global Order: zshenv, zprofile, zshrc, zlogin
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+
+     DBG_INDENT_FUNC init
+
+     MY_NAME="/etc/zlogin"
+     if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+       DBG_ECHO "$DBG_INDENT$MY_NAME{"
+     fi
+
+     if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+       DBG_ECHO "$DBG_INDENT}"
+     fi
+
+     if [ ! -f $HOME/.zlogin ]; then
+       DBG_INDENT_FUNC clobber
+     fi   
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################
