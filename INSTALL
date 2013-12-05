@@ -24,16 +24,16 @@ A)  You must install lua first.  You have two choices:
          ***** Lua 5.0 or 4.0 will NOT work. *****
 
 B) After lua and lua-posix  available you can install shell_startup_debug.
-   if you wish to install this program in /opt/apps/shell_startup_debug/1.4.3
+   if you wish to install this program in /opt/apps/shell_startup_debug/X.Y.Z
 
      $ ./configure --prefix=/opt/apps
 
 
-   This will install version 1.4.3 in /opt/apps/shell_startup_debug/1.4.3
+   This will install version X.Y.Z in /opt/apps/shell_startup_debug/X.Y.Z
    and make a symbolic link from the version to shell_startup_debug
 
 
-C) Assuming that you are installing version 1.4.3 in /opt/apps/shell_startup_debug/1.4.3
+C) Assuming that you are installing version X.Y.Z in /opt/apps/shell_startup_debug/X.Y.Z
    then you need to copy or symbolic link two files:
 
       $ ln -s /opt/apps/shell_startup_debug/shell_startup_debug/init/bash \
@@ -46,7 +46,10 @@ D) Make sure a path to lua exists.  Either lua is a standard location such as /u
    both bash and csh.
 
 
-E) Modify /etc/profile:
+
+E) There is a samples directory:
+
+F) Modify /etc/profile:
 
   1) At the top of /etc/profile add:
 
@@ -97,13 +100,13 @@ E) Modify /etc/profile:
 
   3) Add to the bottom of /etc/profile:
 
-       DBG_INDENT_FUNC down
 
+       DBG_INDENT_FUNC down
        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
          DBG_ECHO "$DBG_INDENT}"
        fi     
 
-F) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
+G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
 
    1) Add at the top of this file:
 
@@ -135,6 +138,8 @@ F) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
         fi
 
 
+        DBG_INDENT_FUNC up
+        
         if ! shopt -q login_shell; then
           if [ -d /etc/profile.d ]; then
             for i in /etc/profile.d/*.sh; do
@@ -153,6 +158,7 @@ F) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
             unset i
           fi
         fi      
+        DBG_INDENT_FUNC down
 
   3) Add at the bottom:
 
@@ -166,5 +172,14 @@ F) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
 
     please feel free to work around this.
 
-G) Feel free to similarly modify csh.login and csh.cshrc.
- 
+H) Things to double check in you /etc/bashrc and /etc/profile:
+      1) Every place you have $DBG_INDENT you have a DBG_ECHO
+      2) make sure that you have a "DBG_INDENT_FUNC up"  and a
+         matching "DBG_INDENT_FUNC down" in both /etc/bashrc
+         and /etc/profile
+
+I) You'll need to setup zsh similarily.  
+
+J) Feel free to similarly modify csh.login and csh.cshrc.
+
+

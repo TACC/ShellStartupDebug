@@ -1,0 +1,90 @@
+#!/bin/bash
+# -*- shell-script -*-
+# /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
+# and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.SH; do
+        if [ -r $i ]; then
+          . $i
+        fi
+      done
+      unset i
+    fi
+
+    DBG_INDENT_FUNC first # force the creation of log file
+    DBG_INDENT_FUNC init
+    MY_NAME="/etc/profile"
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      echo "$DBG_INDENT$MY_NAME{"
+    fi
+
+    DBG_INDENT_FUNC up
+
+    ###################################################################
+    # if [ -d /etc/profile.d ]; then
+    #   for i in /etc/profile.d/*.sh; do
+    #     if [ -r $i ]; then
+    #       . $i
+    #     fi
+    #   done
+    #   unset i
+    # fi    
+    ###################################################################
+
+
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.sh; do
+        DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
+        if [ -r $i ]; then
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT$i{"
+          fi
+          . $i
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT}"
+          fi
+        fi
+      done
+      unset i
+    fi  
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################
+
+if [ "$PS1" ]; then
+  if [ "$BASH" ] && [ "$BASH" != "/bin/sh" ]; then
+    # The file bash.bashrc already sets the default PS1.
+    # PS1='\h:\w\$ '
+    if [ -f /etc/bash.bashrc ]; then
+      . /etc/bash.bashrc
+    fi
+  else
+    if [ "`id -u`" -eq 0 ]; then
+      PS1='# '
+    else
+      PS1='$ '
+    fi
+  fi
+fi
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+    DBG_INDENT_FUNC down
+
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      DBG_ECHO "$DBG_INDENT}"
+    fi  
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################
+
+# The default umask is now handled by pam_umask.
+# See pam_umask(8) and /etc/login.defs.
+
