@@ -1,1 +1,69 @@
-.
+#!/bin/zsh
+# -*- shell-script -*-
+# /etc/zsh/zshenv: system-wide .zshenv file for zsh(1).
+
+# This file is sourced on all invocations of the shell.
+# If the -f flag is present or if the NO_RCS option is
+# set within this file, all other initialization files
+# are skipped.
+#
+# This file should contain commands to set the command
+# search path, plus other important environment variables.
+# This file should not contain commands that produce
+# output or assume the shell is attached to a tty.
+#
+# Global Order: zshenv, zprofile, zshrc, zlogin
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.SH; do
+        if [ -r $i ]; then
+          . $i
+        fi
+      done
+      unset i
+    fi
+
+
+    DBG_INDENT_FUNC first # force the creation of log file
+    DBG_INDENT_FUNC init
+    MY_NAME="/etc/zsh/zshenv"
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      DBG_ECHO "$DBG_INDENT$MY_NAME{"
+    fi
+
+    if [[ -z "$PATH" || "$PATH" == "/bin:/usr/bin" ]]; then
+      export PATH="/usr/local/bin:/usr/bin:/bin:/usr/games"
+    fi
+
+
+    DBG_INDENT_FUNC up
+
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.sh; do
+        DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
+        if [ -r $i ]; then
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT$i{"
+          fi
+          . $i
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT}"
+          fi
+        fi
+      done
+      unset i
+      DBG_INDENT_FUNC init # This turns it back on
+    fi
+
+    DBG_INDENT_FUNC down
+
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      DBG_ECHO "$DBG_INDENT}"
+    fi  
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################

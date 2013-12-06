@@ -1,0 +1,40 @@
+#!/bin/zsh
+# -*- shell-script -*-
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+
+    DBG_INDENT_FUNC init
+
+    MY_NAME="/etc/zsh/zlogout"
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+        DBG_ECHO "$DBG_INDENT$MY_NAME{"
+    fi
+
+    DBG_INDENT_FUNC up
+
+    if [ -d /etc/profile.d ]; then
+      for i in /etc/profile.d/*.sh.fini; do
+        if [ -r $i ]; then
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT$i{"
+          fi
+          . $i
+          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            DBG_ECHO "$DBG_INDENT}"
+          fi
+        fi
+      done
+      unset i
+    fi
+
+    DBG_INDENT_FUNC down
+
+    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      DBG_ECHO "$DBG_INDENT}"
+    fi  
+
+########################################################################
+#   End Shell Startup Debug
+########################################################################
