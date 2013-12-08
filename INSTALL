@@ -19,35 +19,42 @@ A)  You must install lua first.  You have two choices:
             liblua5.1-posix0
             lua5.1
 
-      Lmod requires Lua 5.1 or 5.2
+      This package requires Lua 5.1 or 5.2
 
          ***** Lua 5.0 or 4.0 will NOT work. *****
 
 B) After lua and lua-posix  available you can install shell_startup_debug.
-   if you wish to install this program in /opt/apps/shell_startup_debug/X.Y.Z
+   If you wish to install this program in /opt/apps/shell_startup_debug/X.Y.Z
 
-     $ ./configure --prefix=/opt/apps
+     $ ./configure --prefix=/opt/apps; make ; make install
 
 
    This will install version X.Y.Z in /opt/apps/shell_startup_debug/X.Y.Z
-   and make a symbolic link from the version to shell_startup_debug
+   and make a symbolic link from the version to shell_startup_debug.  The
+   creation of the symbolic link is reason why you do "--prefix=/opt/apps"
+   instead of "--prefix=/opt/apps/shell_startup_debug/X.Y.Z".  
+   
 
 
 C) Assuming that you are installing version X.Y.Z in /opt/apps/shell_startup_debug/X.Y.Z
-   then you need to copy or symbolic link two files:
+   then you need to copy or symbolic link two files as root:
 
       $ ln -s /opt/apps/shell_startup_debug/shell_startup_debug/init/bash \
               /etc/profile.d/01_shell_startup_debug.SH
       $ ln -s /opt/apps/shell_startup_debug/shell_startup_debug/init/csh \
               /etc/profile.d/01_shell_startup_debug.CSH
 
+   Note that we use the symbolic link created by the previous step.  This way these
+   links will point to the currently installed version.
+
+
 D) Make sure a path to lua exists.  Either lua is a standard location such as /usr/bin
    or /usr/local/bin.  Or create 00_lua.SH and 00_lua.CSH to define the path to lua for
    both bash and csh.
 
 
-
-E) There is a samples directory:
+E) There is a examples directory that has examples of modified /etc/profile and /etc/bashrc
+   (or /etc/bash.bashrc) for bash, csh and zsh.
 
 F) Modify /etc/profile:
 
@@ -172,14 +179,12 @@ G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
 
     please feel free to work around this.
 
-H) Things to double check in you /etc/bashrc and /etc/profile:
+H) Things to double check in your /etc/bashrc (or /etc/bash.bashrc) and
+   /etc/profile:
       1) Every place you have $DBG_INDENT you have a DBG_ECHO
-      2) make sure that you have a "DBG_INDENT_FUNC up"  and a
+      2) Make sure that you have a "DBG_INDENT_FUNC up"  and a
          matching "DBG_INDENT_FUNC down" in both /etc/bashrc
-         and /etc/profile
+         (or /etc/bash.bashrc) and /etc/profile.
 
-I) You'll need to setup zsh similarily.  
-
-J) Feel free to similarly modify csh.login and csh.cshrc.
-
-
+I) You'll need to setup zsh and csh similarily.  See the examples directory
+   for modified version for all shell.
