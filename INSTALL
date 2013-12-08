@@ -52,9 +52,10 @@ D) Make sure a path to lua exists.  Either lua is a standard location such as /u
    or /usr/local/bin.  Or create 00_lua.SH and 00_lua.CSH to define the path to lua for
    both bash and csh.
 
+E) Modify /etc/profile and /etc/bashrc (or /etc/bash.bashrc)
 
-E) There is a examples directory that has examples of modified /etc/profile and /etc/bashrc
-   (or /etc/bash.bashrc) for bash, csh and zsh.
+   There is an examples directory showing how this works on Mac OS X and Ubuntu Linux.
+   These can be use as a guide when modifying bash's startup scripts.
 
 F) Modify /etc/profile:
 
@@ -184,7 +185,18 @@ H) Things to double check in your /etc/bashrc (or /etc/bash.bashrc) and
       1) Every place you have $DBG_INDENT you have a DBG_ECHO
       2) Make sure that you have a "DBG_INDENT_FUNC up"  and a
          matching "DBG_INDENT_FUNC down" in both /etc/bashrc
+<<<<<<< HEAD
          (or /etc/bash.bashrc) and /etc/profile.
+=======
+         and /etc/profile
+
+I) You'll need to setup zsh similarily.  See examples/*/zsh
+   directories as guides.
+
+J) Feel free to similarly modify csh.login and csh.cshrc. See examples/*/csh
+   directories as guides.
+
+>>>>>>> ab6b39a84619a98bbfd23ad1368fadc575df835a
 
 I) You'll need to setup zsh and csh similarily.  See the examples directory
    for modified version for all shell.
