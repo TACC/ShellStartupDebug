@@ -13,7 +13,6 @@ endif
     set MY_NAME="/etc/csh.login"
     if ( $?SHELL_STARTUP_DEBUG ) then
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
-      DBG_ECHO "$DBG_INDENT  Login Shell: $SHELL"
     endif
 
     DBG_INDENT_FUNC down

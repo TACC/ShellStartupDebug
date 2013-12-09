@@ -11,11 +11,10 @@ unalias DBG_ECHO
 alias DBG_ECHO echo \!*
 
 if ( $?SHELL_STARTUP_DEBUG ) then
+  setenv SHELL_STARTUP_DEBUG_T0 `@PKG@/libexec/epoch`
   alias DBG_INDENT_FUNC 'eval `'$exec_prefix'/libexec/DBG_INDENT_cmd -s csh \!*`;set DBG_INDENT="`printf $DBG_INDENT_FMT $DBG_INDENT_ARG`"'
-  if ( $SHELL_STARTUP_DEBUG > 2 ) then
-    unalias DBG_ECHO
-    alias   DBG_ECHO $exec_prefix/libexec/ECHO_cmd \!*
-  endif
+  unalias DBG_ECHO
+  alias   DBG_ECHO $exec_prefix/libexec/ECHO_cmd \!*
 else
   alias DBG_INDENT_FUNC true
 endif

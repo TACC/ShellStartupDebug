@@ -27,6 +27,12 @@ processCmdA()
 
 }
 
+MAKE=make
+command -v remake 2>&1 > /dev/null
+if [ "$?" = 0 ]; then
+  MAKE=remake
+fi
+
 host=$(expr $(hostname) : "\([^.][^.]*\)")
 
 case $host in
@@ -36,10 +42,10 @@ case $host in
 	prefixA=("$HOME/l/pkg:");;
 esac
 
-cmdA=( "make distclean"
+cmdA=( "$MAKE distclean"
        './configure --prefix=$prefix'
-       '$SUDO make install'
-       "make clobber"
+       '$SUDO $MAKE install'
+       "$MAKE clobber"
       )
 
 processCmdA prefixA cmdA
