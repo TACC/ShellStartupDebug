@@ -23,6 +23,20 @@
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
     fi
 
+########################################################################
+#   End Shell Startup Debug
+########################################################################
+
+if [ -z "$__PATH_HELPER" -a -x /usr/libexec/path_helper ]; then
+   export __PATH_HELPER=1
+   eval `/usr/libexec/path_helper -s`
+fi
+
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+
+    DBG_INDENT_FUNC up
 
     if ! shopt -q login_shell; then
       if [ -d /etc/profile.d ]; then
@@ -42,6 +56,8 @@
         unset i
       fi
     fi
+
+    DBG_INDENT_FUNC down
 
     ###################################################################
     # System-wide .bashrc file for interactive bash(1) shells.
@@ -65,10 +81,13 @@
 #   End Shell Startup Debug
 ########################################################################
 
-
-PS1='\h:\W \u\$ '
-# Make bash check its window size after a process completes
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+[ "$PS1" = "\\s-\\v\\\$ " ] &&  PS1='\h:\W \u\$ '
+
+
 # Tell the terminal about the working directory at each prompt.
 if [ "$TERM_PROGRAM" == "Apple_Terminal" ] && [ -z "$INSIDE_EMACS" ]; then
     update_terminal_cwd() {
