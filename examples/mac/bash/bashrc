@@ -1,6 +1,11 @@
 # -*- shell-script -*-
 # System-wide bashrc file for interactive bash(1) shells.
 
+if [ -z "$__PATH_HELPER" -a -x /usr/libexec/path_helper ]; then
+   export __PATH_HELPER=1
+   eval `/usr/libexec/path_helper -s`
+fi
+
 ########################################################################
 #   Begin Shell Startup Debug
 ########################################################################
@@ -22,19 +27,6 @@
     if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
     fi
-
-########################################################################
-#   End Shell Startup Debug
-########################################################################
-
-if [ -z "$__PATH_HELPER" -a -x /usr/libexec/path_helper ]; then
-   export __PATH_HELPER=1
-   eval `/usr/libexec/path_helper -s`
-fi
-
-########################################################################
-#   Begin Shell Startup Debug
-########################################################################
 
     DBG_INDENT_FUNC up
 

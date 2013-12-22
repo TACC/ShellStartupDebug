@@ -2,8 +2,9 @@
 # -*- shell-script -*-
 # System-wide .profile for sh(1)
 
-if [ -x /usr/libexec/path_helper ]; then
-	eval `/usr/libexec/path_helper -s`
+if [ -z "$__PATH_HELPER" -a -x /usr/libexec/path_helper ]; then
+   export __PATH_HELPER=1
+   eval `/usr/libexec/path_helper -s`
 fi
 
 ########################################################################
