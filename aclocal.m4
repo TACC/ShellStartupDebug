@@ -16,6 +16,7 @@ echo
 echo '----------------------------------- SUMMARY ----------------------------------'
 echo
 echo "Package version............................." : shell_startup_debug-$SSDV
+echo "Package version (Git)......................." : $ssdV
 echo "Lua executable.............................." : $luaprog
 echo "Prefix......................................" : $prefix
 echo "Actual Install dir.........................." : $prefix/shell_startup_debug/$SSDV

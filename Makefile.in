@@ -1,7 +1,8 @@
 PATH_TO_LUA	:= @PATH_TO_LUA@
 VERSION_SRC	:= src/Version.lua
 VERSION_LIB	:= $(subst .lua,,$(VERSION_SRC))
-GIT_VERSION     := $(shell if [ -n "$(GIT_PROG)" ]; then ssdV=`git describe --always`; echo "($$ssdV)"; fi)
+GIT_PROG        := @PATH_TO_GIT@
+GIT_VERSION     := $(shell if [ -n "$(GIT_PROG)" -a -d .git ]; then ssdV=`git describe --always`; echo "($$ssdV)"; else echo "@git@"; fi)
 prefix		:= @prefix@
 package		:= shell_startup_debug
 version		:= $(shell cd ./src; $(PATH_TO_LUA)/lua -e "V=require('Version'); print(V.tag())")
@@ -77,7 +78,8 @@ rc_files: $(INIT_FILES)
 	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
 
 libexec:  $(lua_code)
-	cp $^ $(DESTDIR)$(LIBEXEC)
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
+
 
 makefile: Makefile.in config.status
 	./config.status
@@ -88,7 +90,7 @@ config.status:
 dist:  
 	$(MAKE) DistD=DIST _dist
 
-_dist: _distMkDir _distMainDir _distSrc _distSetup _distTools _distTar
+_dist: _distMkDir _distMainDir _distSrc _distVersion _distSetup _distTools _distTar
 
 _distMkDir:
 	$(RM) -r $(DistD)
@@ -101,6 +103,9 @@ _distSrc:
 _distSetup:
 	mkdir $(DistD)/setup
 	cp $(SHELL_INIT) $(DistD)/setup
+
+_distVersion:
+	perl -p -i -e 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/src/Version.lua
 
 _distTools:
 	mkdir $(DistD)/tools
