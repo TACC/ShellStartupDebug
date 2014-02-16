@@ -7,16 +7,15 @@ endif
 
 
 set exec_prefix="@PKG@"
-unalias DBG_ECHO
-alias DBG_ECHO echo \!*
+unalias DBG_ECHO DBG_INDENT_FUNC
+alias DBG_ECHO true
+alias DBG_INDENT_FUNC true
 
 if ( $?SHELL_STARTUP_DEBUG ) then
   setenv SHELL_STARTUP_DEBUG_T0 `@PKG@/libexec/epoch`
   alias DBG_INDENT_FUNC 'eval `'$exec_prefix'/libexec/DBG_INDENT_cmd -s csh \!*`;set DBG_INDENT="`printf $DBG_INDENT_FMT $DBG_INDENT_ARG`"'
   unalias DBG_ECHO
   alias   DBG_ECHO $exec_prefix/libexec/ECHO_cmd \!*
-else
-  alias DBG_INDENT_FUNC true
 endif
 
 unset exec_prefix
