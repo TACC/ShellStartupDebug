@@ -68,17 +68,17 @@ __echo_me:
 
 
 startup: $(SHELL_INIT)
-	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(INIT) __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(DESTDIR)$(INIT) __install_me
 
 
 libexec_cmds: $(LIBEXEC_CMDS)
-	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(DESTDIR)$(LIBEXEC) __install_me
 
 rc_files: $(INIT_FILES)
-	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(DESTDIR)$(LIBEXEC) __install_me
 
 libexec:  $(lua_code)
-	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(LIBEXEC) __install_me
+	$(MAKE) INSTALL_LIST="$^" DIRLOC=$(DESTDIR)$(LIBEXEC) __install_me
 
 
 makefile: Makefile.in config.status
