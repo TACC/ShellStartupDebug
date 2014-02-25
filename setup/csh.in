@@ -1,4 +1,5 @@
 #!/bin/csh
+# Version: @git@
 set myShell=`basename $shell`
 
 if ( -f $HOME/.init.csh ) then
