@@ -103,6 +103,7 @@ _distSrc:
 _distSetup:
 	mkdir $(DistD)/setup
 	cp $(SHELL_INIT) $(DistD)/setup
+	perl -p -i -e 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/setup/*
 
 _distExamples:
 	mkdir $(DistD)/examples

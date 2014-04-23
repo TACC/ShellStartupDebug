@@ -15,11 +15,11 @@ DBG_INDENT_FUNC()
 
 if [ -f $HOME/.init.sh ]; then
   . $HOME/.init.sh
-  export SHELL_STARTUP_DEBUG_T0=$(@PKG@/libexec/epoch)
 fi
 
 
 if [ -n "$SHELL_STARTUP_DEBUG" ]; then
+  export SHELL_STARTUP_DEBUG_T0=$(@PKG@/libexec/epoch)
   DBG_INDENT_FUNC()
   {
     eval `@PKG@/libexec/DBG_INDENT_cmd -s bash "$@"`;
