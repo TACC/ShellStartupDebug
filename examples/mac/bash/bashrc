@@ -1,5 +1,7 @@
 # -*- shell-script -*-
-# System-wide bashrc file for interactive bash(1) shells.
+# System-wide .bashrc file for interactive bash(1) shells.
+
+# System-wide .profile for sh(1)
 
 if [ -z "$__PATH_HELPER" -a -x /usr/libexec/path_helper ]; then
    export __PATH_HELPER=1
@@ -34,15 +36,11 @@ fi
       if [ -d /etc/profile.d ]; then
         for i in /etc/profile.d/*.sh; do
           if [ -r $i ]; then
-            if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
-              DBG_ECHO "$DBG_INDENT$i{"
-            fi
+            DBG_ECHO "$DBG_INDENT$i{"
             DBG_INDENT_FUNC clear  # This clears the echo function if it exists
             . $i
             DBG_INDENT_FUNC init   # This turns in back on.
-            if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
-              DBG_ECHO "$DBG_INDENT}"
-            fi
+            DBG_ECHO "$DBG_INDENT}"
           fi
         done
         unset i
@@ -63,9 +61,7 @@ fi
 
     # If not running interactively, don't do anything
     if [ -z "$PS1" ]; then
-      if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
-        DBG_ECHO "$DBG_INDENT}"
-      fi
+      DBG_ECHO "$DBG_INDENT}"
       return
     fi  
 
@@ -98,9 +94,7 @@ fi
 #   Begin Shell Startup Debug
 ########################################################################
 
-   if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
-     DBG_ECHO "$DBG_INDENT}"
-   fi  
+   DBG_ECHO "$DBG_INDENT}"
 
 ########################################################################
 #   End Shell Startup Debug
