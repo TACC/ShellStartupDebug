@@ -1779,6 +1779,8 @@ SSDV=$( $luaprog -e 'v=require("src/Version"); s=v.name():gsub(" .*","");print(s
 
 if test -n $PATH_TO_GIT -a -d .git ; then
   ssdV=$($PATH_TO_GIT describe)
+else
+  ssdV=$($luaprog -e 'v=require("src/Version"); s=v.git():gsub(" .*","");print(s)')
 fi
 
 
@@ -1831,7 +1833,7 @@ if test -n "$missingModules" ; then
   echo ""
   echo "Error: The follow lua module(s) are missing: $missingModules"
   echo ""
-  echo "You can not run Lmod without: $missingModules"
+  echo "You can not run Shell_Startup_Debug without: $missingModules"
   exit 1
 fi
 
@@ -3001,9 +3003,7 @@ echo
 echo '----------------------------------- SUMMARY ----------------------------------'
 echo
 echo "Package version............................." : shell_startup_debug-$SSDV
-if test -n $ssdV; then
 echo "Package version (Git)......................." : $ssdV
-fi
 echo "Lua executable.............................." : $luaprog
 echo "Prefix......................................" : $prefix
 echo "Actual Install dir.........................." : $prefix/shell_startup_debug/$SSDV

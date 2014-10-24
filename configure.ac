@@ -94,7 +94,7 @@ if test -n "$missingModules" ; then
   echo ""
   echo "Error: The follow lua module(s) are missing: $missingModules"
   echo ""
-  echo "You can not run Lmod without: $missingModules"
+  echo "You can not run Shell_Startup_Debug without: $missingModules"
   exit 1
 fi
 
