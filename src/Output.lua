@@ -38,9 +38,9 @@ require("capture")
 require("fileOps")
 require("string_trim")
 
-local getenv = os.getenv
-local io     = io
-
+_DEBUG          = false
+local getenv    = os.getenv
+local io        = io
 local BaseShell = require("BaseShell")
 local posix     = require("posix")
 

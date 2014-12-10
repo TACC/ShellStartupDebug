@@ -12,6 +12,7 @@ package.path = LuaCommandName_dir .. "../tools/?.lua;" ..
                package.path
 
 require("strict")
+_DEBUG      = false
 local epoch = false
 local posix = require("posix")
 function build_epoch()

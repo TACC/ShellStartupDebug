@@ -55,6 +55,7 @@ package.path = LuaCommandName_dir .. "../tools/?.lua;" ..
 require("strict")
 require("fileOps")
 require("capture")
+_DEBUG       = false
 local posix  = require("posix")
 local getenv = os.getenv
 
