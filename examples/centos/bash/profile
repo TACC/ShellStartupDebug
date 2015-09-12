@@ -75,6 +75,15 @@ fi
       fi
     done
     unset i
+########################################################################
+#   Begin Shell Startup Debug
+########################################################################
+    for i in /etc/profile.d/*.SH; do
+      if [ -r $i ]; then
+        . $i
+      fi
+    done
+    unset i
 
     ####################################################################
     # for i in /etc/profile.d/*.sh ; do
@@ -100,7 +109,6 @@ fi
         else
             . "$i" >/dev/null 2>&1
         fi  
-        . $i
         if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
           DBG_ECHO "$DBG_INDENT}"
         fi
