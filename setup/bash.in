@@ -18,6 +18,8 @@ if [ -f $HOME/.init.sh ]; then
 fi
 
 
+export __INIT_SHELL_STARTUP_DEBUG=1
+
 if [ -n "${SHELL_STARTUP_DEBUG:-}" ]; then
   export SHELL_STARTUP_DEBUG_T0=$(@PKG@/libexec/epoch)
   DBG_INDENT_FUNC()
