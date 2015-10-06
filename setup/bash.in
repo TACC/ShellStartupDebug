@@ -17,8 +17,7 @@ if [ -f $HOME/.init.sh ]; then
   . $HOME/.init.sh
 fi
 
-
-export __INIT_SHELL_STARTUP_DEBUG=1
+# Remember that the user sets SHELL_STARTUP_DEBUG in their ~/.init.sh file
 
 if [ -n "${SHELL_STARTUP_DEBUG:-}" ]; then
   export SHELL_STARTUP_DEBUG_T0=$(@PKG@/libexec/epoch)
