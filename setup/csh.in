@@ -12,6 +12,8 @@ unalias DBG_ECHO DBG_INDENT_FUNC
 alias DBG_ECHO true
 alias DBG_INDENT_FUNC true
 
+# Remember that the user sets SHELL_STARTUP_DEBUG in their ~/.init.csh file
+
 if ( $?SHELL_STARTUP_DEBUG ) then
   setenv SHELL_STARTUP_DEBUG_T0 `@PKG@/libexec/epoch`
   alias DBG_INDENT_FUNC 'eval `'$exec_prefix'/libexec/DBG_INDENT_cmd -s csh \!*`;set DBG_INDENT="`printf $DBG_INDENT_FMT $DBG_INDENT_ARG`"'
