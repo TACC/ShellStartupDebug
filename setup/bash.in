@@ -28,20 +28,18 @@ if [ -n "${SHELL_STARTUP_DEBUG:-}" ]; then
   }   
   DBG_ECHO()
   {
-    local arg
-    arg=$(echo "$1" | tr -d ' ')
-    if [ "$arg"  = "}" ]; then
-      SHELL_STARTUP_DEBUG_T1=$(@PKG@/libexec/epoch)
-      SHELL_STARTUP_DEBUG_RT=$(builtin echo "$SHELL_STARTUP_DEBUG_T1 - $SHELL_STARTUP_DEBUG_T0" | bc -q )
-      builtin echo "$@" " Time = $SHELL_STARTUP_DEBUG_RT"
-    else
-      builtin echo "$@"
-    fi
+     @PKG@/libexec/ECHO_cmd "$@"
   }
-  if [ $SHELL_STARTUP_DEBUG -gt 2 ]; then
-    DBG_ECHO()
-    {
-      @PKG@/libexec/ECHO_cmd "$@"
-    }
-  fi
+  #DBG_ECHO()
+  #{
+  #  local arg
+  #  arg=$(echo "$1" | tr -d ' ')
+  #  if [ "$arg"  = "}" ]; then
+  #    SHELL_STARTUP_DEBUG_T1=$(@PKG@/libexec/epoch)
+  #    SHELL_STARTUP_DEBUG_RT=$(builtin echo "$SHELL_STARTUP_DEBUG_T1 - $SHELL_STARTUP_DEBUG_T0" | bc -q )
+  #    builtin echo "$@" " Time = $SHELL_STARTUP_DEBUG_RT"
+  #  else
+  #    builtin echo "$@"
+  #  fi
+  #}
 fi

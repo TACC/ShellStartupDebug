@@ -1,6 +1,7 @@
 #!/bin/csh
 # Version: @git@
 set myShell=`basename $shell`
+set DBG_INDENT=""
 
 if ( -f $HOME/.init.csh ) then
   source $HOME/.init.csh

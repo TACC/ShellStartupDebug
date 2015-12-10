@@ -55,13 +55,25 @@ package.path = LuaCommandName_dir .. "../tools/?.lua;" ..
 require("strict")
 require("fileOps")
 require("capture")
+require("string_split")
 _DEBUG       = false
 local posix  = require("posix")
 local getenv = os.getenv
 
 function printArg(f,arg, T0)
-   for i,v in ipairs(arg) do
-      if ( i == 1 and v:find("}")) then
+   for idx,v in ipairs(arg) do
+      local i,j = v:find("}")
+
+      if ( idx == 1 and j ) then
+         local indent = v:sub(1,j-1) .. "  "
+         local printList = getenv("SHELL_STARTUP_DEBUG_PRINT_LIST") or ""
+         for var in printList:split(":") do
+            local v = getenv(var)
+            if (v) then
+               f:write(indent,var,": ",v,"\n")
+            end
+         end
+
          local T1 = tonumber(capture("@PKG@/libexec/epoch"))
          local s  = string.format("%.4f",T1 - T0)
          f:write(v," Time = ",s)
@@ -76,9 +88,10 @@ end
 function main()
 
    if (#arg == 0) then return end
-   local T0 = tonumber(getenv("SHELL_STARTUP_DEBUG_T0"))
 
-   local ssd = tonumber(getenv("SHELL_STARTUP_DEBUG"))
+   local T0 = tonumber(getenv("SHELL_STARTUP_DEBUG_T0") or "0")
+
+   local ssd = tonumber(getenv("SHELL_STARTUP_DEBUG") or "0")
    if (ssd < 3) then
       printArg(io.stdout, arg, T0)
       return
