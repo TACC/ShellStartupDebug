@@ -40,7 +40,7 @@ local concatTbl = table.concat
 -- findInPath(): find the absolute path to an executable.
 
 function findInPath(exec, path)
-   local result  = ""
+   local result  = "unknown_path_for_" .. (exec or "unknown")
    if ( exec == nil) then return result end
    exec = exec:trim()
    local i = exec:find(" ")
