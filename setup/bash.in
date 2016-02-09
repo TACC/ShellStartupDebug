@@ -3,6 +3,8 @@
 
 # Version: @git@
 
+DBG_INDENT=""
+
 DBG_ECHO()
 {
   true

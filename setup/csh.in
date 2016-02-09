@@ -12,6 +12,7 @@ set exec_prefix="@PKG@"
 unalias DBG_ECHO DBG_INDENT_FUNC
 alias DBG_ECHO true
 alias DBG_INDENT_FUNC true
+set DBG_INDENT=""
 
 # Remember that the user sets SHELL_STARTUP_DEBUG in their ~/.init.csh file
 
