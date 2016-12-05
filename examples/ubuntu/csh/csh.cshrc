@@ -68,16 +68,13 @@ endif
     set nonomatch
     foreach i ( /etc/profile.d/*.csh )
       if ( -r $i ) then
-        #if ( $?SHELL_STARTUP_DEBUG ) then
-        #  DBG_ECHO "$DBG_INDENT$i{"
-        #endif
-        #source $i
-        #if ( $?SHELL_STARTUP_DEBUG ) then
-        #  DBG_ECHO "$DBG_INDENT}"
-        #endif
-        DBG_ECHO "$DBG_INDENT$i{"
-        source $i
-        DBG_ECHO "$DBG_INDENT}"
+        if ( $?SHELL_STARTUP_DEBUG ) then
+           DBG_ECHO "$DBG_INDENT$i{"
+        endif
+        source $i;
+        if ( $?SHELL_STARTUP_DEBUG ) then
+           DBG_ECHO "$DBG_INDENT}"
+        endif
       endif
     end
     DBG_INDENT_FUNC init   # This turns in back on.
