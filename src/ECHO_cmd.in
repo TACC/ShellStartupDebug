@@ -93,7 +93,7 @@ function main()
 
    local ssd = tonumber(getenv("SHELL_STARTUP_DEBUG") or "0")
    if (ssd < 3) then
-      printArg(io.stdout, arg, T0)
+      printArg(io.stderr, arg, T0)
       return
    end
 
