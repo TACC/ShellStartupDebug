@@ -13,7 +13,7 @@
 
       MY_NAME="/etc/zshrc"
       if   [ "x$SHELL_STARTUP_DEBUG" != x ]; then
-            echo "$DBG_INDENT$MY_NAME{"
+            DBG_ECHO "$DBG_INDENT$MY_NAME{"
       fi    
 
 ########################################################################

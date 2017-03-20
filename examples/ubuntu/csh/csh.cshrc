@@ -17,7 +17,7 @@
 
     set MY_NAME="/etc/csh.cshrc"
     if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT$MY_NAME{"
+      DBG_ECHO "$DBG_INDENT$MY_NAME{"
     endif
 
     DBG_INDENT_FUNC up
@@ -83,7 +83,7 @@ endif
     DBG_INDENT_FUNC down
 
     if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT}"
+      DBG_ECHO "$DBG_INDENT}"
     endif
 
 ########################################################################

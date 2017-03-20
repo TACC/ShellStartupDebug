@@ -7,8 +7,8 @@
 ########################################################################
     set MY_NAME="/etc/csh.login"
     if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT$MY_NAME{"
-      echo "$DBG_INDENT  Login Shell: $SHELL"
+      DBG_ECHO "$DBG_INDENT$MY_NAME{"
+      DBG_ECHO "$DBG_INDENT  Login Shell: $SHELL"
     endif
 
 
@@ -38,7 +38,7 @@
     DBG_INDENT_FUNC down
 
     if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT}"
+      DBG_ECHO "$DBG_INDENT}"
     endif
 
 ########################################################################
