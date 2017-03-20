@@ -22,7 +22,7 @@
     fi
 
     MY_NAME="/etc/bash.bashrc"
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
     fi
 
@@ -116,7 +116,7 @@ if ! shopt -q login_shell ; then # We're not a login shell
           if [ -d /etc/profile.d ]; then
             for i in /etc/profile.d/*.sh; do
               if [ -r $i ]; then
-                if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
                   DBG_ECHO "$DBG_INDENT$i{"
                 fi
                 DBG_INDENT_FUNC clear  # This clears the echo function if it exists
@@ -129,7 +129,7 @@ if ! shopt -q login_shell ; then # We're not a login shell
                 fi
                 . $i
                 DBG_INDENT_FUNC init   # This turns in back on.
-                if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
                   DBG_ECHO "$DBG_INDENT}"
                 fi
               fi

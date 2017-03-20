@@ -84,7 +84,7 @@ F) Modify /etc/profile:
        DBG_INDENT_FUNC first # force the creation of log file
        DBG_INDENT_FUNC init
        MY_NAME="/etc/profile"
-       if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+       if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
          echo "$DBG_INDENT$MY_NAME{"
        fi
 
@@ -94,11 +94,11 @@ F) Modify /etc/profile:
          for i in /etc/profile.d/*.sh; do
            DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
            if [ -r $i ]; then
-             if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+             if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
                DBG_ECHO "$DBG_INDENT$i{"
              fi
              . $i
-             if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+             if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
                DBG_ECHO "$DBG_INDENT}"
              fi
            fi
@@ -110,7 +110,7 @@ F) Modify /etc/profile:
 
 
        DBG_INDENT_FUNC down
-       if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+       if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
          DBG_ECHO "$DBG_INDENT}"
        fi     
 
@@ -141,7 +141,7 @@ G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
      With:
 
         MY_NAME="/etc/bashrc"
-        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+        if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
           echo "$DBG_INDENT$MY_NAME{"
         fi
 
@@ -152,13 +152,13 @@ G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
           if [ -d /etc/profile.d ]; then
             for i in /etc/profile.d/*.sh; do
               if [ -r $i ]; then
-                if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
                   DBG_ECHO "$DBG_INDENT$i{"
                 fi
                 DBG_INDENT_FUNC clear  # This clears the echo function if it exists
                 . $i
                 DBG_INDENT_FUNC init   # This turns in back on.
-                if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
                   DBG_ECHO "$DBG_INDENT}"
                 fi
               fi
@@ -170,7 +170,7 @@ G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
 
   3) Add at the bottom:
 
-        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+        if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
            DBG_ECHO "$DBG_INDENT}"
         fi
 

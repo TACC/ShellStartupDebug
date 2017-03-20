@@ -12,7 +12,7 @@
 ########################################################################
 
       MY_NAME="/etc/zshrc"
-      if   [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      if   [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
             DBG_ECHO "$DBG_INDENT$MY_NAME{"
       fi    
 
@@ -68,7 +68,7 @@ fi
 #   Begin Shell Startup Debug
 ########################################################################
 
-     if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+     if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
        DBG_ECHO "$DBG_INDENT}"
      fi   
 

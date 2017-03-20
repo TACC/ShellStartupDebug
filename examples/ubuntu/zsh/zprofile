@@ -15,11 +15,11 @@
     DBG_INDENT_FUNC init
 
     MY_NAME="/etc/zsh/zprofile"
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
     fi
 
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT}"
     fi  
 

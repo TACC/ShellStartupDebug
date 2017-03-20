@@ -21,7 +21,7 @@
     fi
 
     MY_NAME="/etc/bash.bashrc"
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
     fi
 
@@ -31,13 +31,13 @@
       if [ -d /etc/profile.d ]; then
         for i in /etc/profile.d/*.sh; do
           if [ -r $i ]; then
-            if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
               DBG_ECHO "$DBG_INDENT$i{"
             fi
             DBG_INDENT_FUNC clear  # This clears the echo function if it exists
             . $i
             DBG_INDENT_FUNC init   # This turns in back on.
-            if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+            if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
               DBG_ECHO "$DBG_INDENT}"
             fi
           fi
@@ -57,7 +57,7 @@
 
     # If not running interactively, don't do anything
     if [ -z "$PS1" ]; then
-      if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+      if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
         DBG_ECHO "$DBG_INDENT}"
       fi
       return
@@ -132,7 +132,7 @@ fi
 #   Begin Shell Startup Debug
 ########################################################################
 
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT}"
     fi  
 ########################################################################

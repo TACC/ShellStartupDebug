@@ -1,79 +1,284 @@
 
-makefile,56
-PATH_TO_LUA	2,7
-version		:= $(shell cd ./src; $(7,167
+setup/csh.in,18
+set myShell=3,28
 
-src/BaseShell.lua,113
-function M.name(22,448
-local function valid_shell(27,514
-function M.build(34,670
-function M.echo_cmd(54,1176
+setup/bash.in,99
+DBG_INDENT=6,54
+DBG_INDENT_FUNC(13,92
+  export SHELL_STARTUP_DEBUG_T0=25,295
+  DBG_ECHO(31,495
 
-src/DBG_INDENT_cmd.in,223
-function masterTbl(7,66
-function splitFileName(11,109
-function quiet(32,530
-function False(36,569
-function up(40,610
-function down(44,650
-function idx_name(56,814
-function build_indent(60,868
-function main(85,1629
-
-src/Output.lua,52
-function DATEString(13,237
-function Output(23,510
-
-src/shell_startup.in,22
-local echo_bash 2,16
-
-src/CmdLineOptions.lua,55
-local function new(19,421
-function  M.options(28,528
-
-src/Version.lua,22
-function M.name(3,31
-
-src/Bare.lua,29
-function Bare.expand(12,227
-
-src/Csh.lua,58
-function Csh.expand(15,285
-function Csh.echo_cmd(26,508
-
-src/Bash.lua,29
-function Bash.expand(11,223
-
-src/ECHO_cmd.in,51
-function splitFileName(4,36
-function main(25,432
-
-build.rtm,76
+build.rtm,91
 VERSION=3,35
 processCmdA(7,172
-host=30,525
-	prefixA=36,676
-cmdA=39,710
+MAKE=30,525
+  MAKE=33,592
+	prefixA=42,761
+cmdA=45,795
 
-configure.ac,51
-dnl $Id: configure.ac,ac2,75
-PATH_TO_LUA=15,488
+makefile,232
+PATH_TO_LUA	1,0
+GIT_VERSION     := $(shell if [ -n "$(GIT_PROG)" -a -d .git ]; then ssdV=5,145
+prefix	6,283
+version		:= $(shell cd ./src; $(8,336
+          ext=58,1720
+	    git push --tags tags204,7662
+          fi;205,7742
 
-Makefile.in,56
-PATH_TO_LUA	2,7
-version		:= $(shell cd ./src; $(7,158
+examples/centos/bash/profile,89
+pathmunge 13,420
+        EUID=30,730
+HOSTNAME=49,1076
+    export HISTCONTROL=52,1172
 
-findLuaPkgs,52
-function string:string8,230
-function main(22,588
+examples/centos/csh/csh.login,24
+    set MY_NAME=13,321
 
-setup/csh.in,18
-set myShell=2,11
+examples/mac/zsh/zshenv,31
+  export __PATH_HELPER=18,607
 
-setup/bash.in,84
-DBG_ECHO(4,36
-DBG_INDENT_FUNC(9,64
-  DBG_INDENT_FUNC(20,188
-    DBG_ECHO(26,408
+examples/mac/zsh/zlogin,21
+     MY_NAME=19,583
+
+examples/mac/zsh/zshrc,42
+      MY_NAME=14,448
+READNULLCMD=23,758
+
+examples/mac/zsh/zprofile,20
+    MY_NAME=17,502
+
+examples/mac/zsh/zlogout,21
+     MY_NAME=10,239
+
+examples/mac/bash/bashrc,31
+   export __PATH_HELPER=8,193
+
+examples/mac/bash/profile,31
+   export __PATH_HELPER=7,234
+
+examples/ubuntu/zsh/zlogin,20
+    MY_NAME=19,582
+
+examples/ubuntu/zsh/zshrc,100
+    function bind2maps 47,1394
+        function zle-zle85,2783
+        function zle-zle88,2871
+
+examples/ubuntu/zsh/zprofile,20
+    MY_NAME=17,502
+
+examples/ubuntu/zsh/zlogout,20
+    MY_NAME=10,238
+
+examples/ubuntu/bash/bash.bashrc,45
+	function command_not_found_handle 116,3449
+
+examples/ubuntu/csh/csh.login,23
+    set MY_NAME=8,213
+
+Makefile.in,232
+PATH_TO_LUA	1,0
+GIT_VERSION     := $(shell if [ -n "$(GIT_PROG)" -a -d .git ]; then ssdV=5,138
+prefix	6,276
+version		:= $(shell cd ./src; $(8,328
+          ext=58,1712
+	    git push --tags tags204,7653
+          fi;205,7733
+
+configure.ac,23
+function main(69,1672
+
+tools/inherits.lua,31
+function inheritsFrom(31,1499
+
+tools/declare.lua,54
+function declare(32,1546
+function isDefined(36,1621
+
+tools/pairsByKeys.lua,29
+function pairsByKeys 10,369
+
+tools/string_trim.lua,30
+function string:trim(30,1425
+
+tools/fileOps.lua,377
+function findInPath(42,1748
+function isDir(77,2624
+function isFile(89,2918
+function isExec(101,3229
+function dirname(111,3539
+function extname(126,3903
+function removeExt(142,4276
+function barefilename(158,4674
+function splitFileName(173,5039
+function pathJoin(191,5500
+function mkdir_recursive(233,6534
+function abspath 257,7035
+function path_regularize(297,8038
+
+tools/Optiks.lua,645
+local function argsPack(29,1310
+function Optiks_Error(35,1474
+function Optiks_Exit(45,1674
+local function Prt(77,2433
+local function PrtEnd(81,2483
+function M.new(86,2522
+function M.add_option(137,3643
+function M.getValue(165,4257
+function M.store(183,4630
+function M.store_true(187,4737
+function M.append(191,4817
+function M.store_false(199,5001
+function M.count(203,5083
+function M.display_store(210,5254
+function M.display_flag(225,5564
+function M.display_count(233,5711
+function M.setDefaults(237,5785
+function M.parseOpt(246,5999
+function M.buildHelpMsg(255,6263
+function M.printHelp(274,6719
+function M.parse(280,6801
+
+tools/BeautifulTbl.lua,88
+function M.new(83,4057
+function M.__build_tbl(115,5073
+function M.build_tbl(177,6636
+
+tools/Optiks_Option.lua,114
+function M.optionNames(54,1813
+function M.bless(58,1873
+function M.setDefault(90,2730
+function M.new(101,3137
+
+tools/TermWidth.lua,28
+function TermWidth(43,1807
+
+tools/strict.lua,28
+local function what 19,432
+
+tools/capture.lua,26
+function capture(36,1568
+
+tools/string_split.lua,29
+function string:split(7,244
+
+tools/ColumnTable.lua,405
+local function sizeMeHelper(60,2619
+local function sizeMe(67,2751
+function M.new(76,3016
+function M.print_tbl(110,3778
+function M.__entry_width1(119,4030
+function M.__entry_width2(139,4495
+function M.__columnSum1(184,5575
+function M.__columnSum2(197,5964
+function M.__display1(230,6846
+function M.__display2(240,7225
+function M.__number_of_columns_rows(278,8190
+function M.build_tbl(380,11280
+
+tools/Dbg.lua,873
+local function prtTbl(89,2556
+local function argsPack(100,2740
+local function changeIndentLevel(106,2904
+local function new(111,3030
+function M.dbg(128,3395
+function M.set_prefix(135,3494
+function M.activateDebug(139,3557
+function M.indentLevel(161,4284
+function M.active(165,4338
+function M.currentLevel(169,4384
+function M.deactivateWarning(173,4451
+function M.activateWarning(177,4517
+function M.Quiet(181,4583
+local function extractVPL(184,4607
+local function startExtractVPL(193,4774
+function M.Start(203,4977
+function M.Empty(220,5388
+function M.Indent(224,5425
+function M.Fini(228,5487
+function M.Warning(246,5932
+function M.Error(255,6118
+function M.errorExit(265,6314
+function M.warningCalled(270,6386
+function M.Debug(275,6445
+function M.TextA(310,7211
+function M.PrintA(329,7544
+function M._print2D(345,7819
+function M.flush(361,8111
+
+README,91
+Once installed,6,108
+Once installed, any user can create a file 6,108
+    } Time 31,771
+
+src/Bare.lua,30
+function Bare.expand(44,1878
+
+src/epoch.in,51
+function build_epoch(18,432
+function main(39,908
+
+src/CmdLineOptions.lua,57
+local function new(54,2138
+function  M.options(63,2245
+
+src/DBG_INDENT_cmd.in,202
+function masterTbl(56,2296
+function quiet(66,2459
+function False(70,2498
+function up(74,2539
+function down(78,2579
+function idx_name(90,2743
+function build_indent(94,2797
+function main(119,3558
+
+src/Version.lua,88
+function M.tag(3,31
+function M.git(4,68
+function M.date(5,108
+function M.name(6,156
+
+src/BaseShell.lua,116
+function M.name(58,2186
+local function valid_shell(63,2252
+function M.build(70,2408
+function M.echo_cmd(90,2914
+
+src/ECHO_cmd.in,50
+function printArg(63,2437
+function main(88,3074
+
+src/Bash.lua,30
+function Bash.expand(45,1925
+
+src/Output.lua,54
+function DATEString(47,1928
+function Output(57,2201
+
+src/Csh.lua,60
+function Csh.expand(49,1987
+function Csh.echo_cmd(60,2210
+
+INSTALL,80
+         lua command,8,285
+     $ ./configure --prefix=/opt/apps; make 29,952
+
+src/shell_startup.rc.in,0
 
 src/COPYRIGHT,0
+
+aclocal.m4,0
+
+examples/ubuntu/csh/csh.cshrc,0
+
+examples/ubuntu/bash/profile,0
+
+examples/ubuntu/zsh/zshenv,0
+
+examples/mac/csh/csh.cshrc,0
+
+examples/mac/csh/csh.login,0
+
+examples/centos/csh/csh.cshrc,0
+
+examples/centos/bash/bashrc,0

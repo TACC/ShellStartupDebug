@@ -30,7 +30,7 @@
     DBG_INDENT_FUNC first # force the creation of log file
     DBG_INDENT_FUNC init
     MY_NAME="/etc/zsh/zshenv"
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT$MY_NAME{"
     fi
 
@@ -45,11 +45,11 @@
       for i in /etc/profile.d/*.sh; do
         DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
         if [ -r $i ]; then
-          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+          if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
             DBG_ECHO "$DBG_INDENT$i{"
           fi
           . $i
-          if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+          if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
             DBG_ECHO "$DBG_INDENT}"
           fi
         fi
@@ -60,7 +60,7 @@
 
     DBG_INDENT_FUNC down
 
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT}"
     fi  
 

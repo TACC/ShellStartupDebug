@@ -92,7 +92,7 @@ fi
     DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
     for i in /etc/profile.d/*.sh; do
       if [ -r $i ]; then
-        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+        if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
           DBG_ECHO "$DBG_INDENT$i{"
         fi
         if [ "${-#*i}" != "$-" ]; then
@@ -100,7 +100,7 @@ fi
         else
             . "$i" >/dev/null 2>&1
         fi  
-        if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+        if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
           DBG_ECHO "$DBG_INDENT}"
         fi
       fi
@@ -110,7 +110,7 @@ fi
     
     DBG_INDENT_FUNC down
 
-    if [ "x$SHELL_STARTUP_DEBUG" != x ]; then
+    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
       DBG_ECHO "$DBG_INDENT}"
     fi  
 
