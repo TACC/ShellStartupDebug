@@ -184,6 +184,8 @@ gittag:
 	  @git status -s > /tmp/ssd$$$$;                                             \
           if [ -s /tmp/ssd$$$$ ]; then                                               \
 	    echo "All files not checked in => try again";                            \
+	  elif [ configure -ot configure.ac ]; then                                  \
+            echo "configure is out of date => try again";                            \
 	  else                                                                       \
 	    $(RM)                                                    $(VERSION_SRC); \
 	    echo "--module('Version')"                            >  $(VERSION_SRC); \

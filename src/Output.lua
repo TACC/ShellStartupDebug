@@ -72,9 +72,9 @@ function Output(shell,cmd)
       end
    end
 
-   if (SSD > 2 or cmd == "clobber" ) then
-      shell:echo_cmd(cmd)
-   end
+   --if (SSD > 2 or cmd == "clobber" ) then
+   --   shell:echo_cmd(cmd)
+   --end
 
    shell:expand(envVarsT)
 
