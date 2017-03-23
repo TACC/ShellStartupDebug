@@ -181,8 +181,8 @@ distclean: clobber
 
 gittag:
         ifneq ($(TAG),)
-	  @git status -s > /tmp/ssd$$$$;                                             \
-          if [ -s /tmp/ssd$$$$ ]; then                                               \
+	  @git status -s > /tmp/git_st_$$$$;                                         \
+          if [ -s /tmp/git_st_$$$$ ]; then                                           \
 	    echo "All files not checked in => try again";                            \
 	  elif [ configure -ot configure.ac ]; then                                  \
             echo "configure is out of date => try again";                            \
@@ -205,7 +205,7 @@ gittag:
             git tag -a $(TAG) -m 'Setting TAG_VERSION to $(TAG)'                   ; \
 	    git push --tags                                                        ; \
           fi;                                                                        \
-          rm -f /tmp/ssd$$$$
+          rm -f /tmp/git_st_$$$$
         else
 	  @echo "To git tag do: make gittag TAG=?"
         endif
