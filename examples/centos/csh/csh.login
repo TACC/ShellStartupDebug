@@ -11,12 +11,8 @@
     DBG_INDENT_FUNC init 
 
     set MY_NAME="/etc/csh.login"
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT$MY_NAME{"
-      echo "$DBG_INDENT  Login Shell: $SHELL"
-    endif
-
-    DBG_INDENT_FUNC up
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
+    DBG_ECHO "$DBG_INDENT  Login Shell: $SHELL"
 
 ########################################################################
 #   End Shell Startup Debug
@@ -39,49 +35,7 @@ set history=1000
 #   Begin Shell Startup Debug
 ########################################################################
 
-    ####################################################################
-    # if ( -d /etc/profile.d ) then
-    #         set nonomatch
-    #         foreach i ( /etc/profile.d/*.csh )
-    #                 if ( -r "$i" ) then
-    # 	                        if ($?prompt) then
-    # 	                              source "$i"
-    # 	                        else
-    # 	                              source "$i" >& /dev/null
-    # 	                        endif
-    #                 endif
-    #         end
-    #         unset i nonomatch
-    # endif
-    ####################################################################
-
-    if ( -d /etc/profile.d ) then
-      DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
-      set nonomatch
-      foreach i ( /etc/profile.d/*.csh )
-        if ( -r $i ) then
-          if ( $?SHELL_STARTUP_DEBUG ) then
-            DBG_ECHO "$DBG_INDENT$i{"
-          endif
-          if ($?prompt) then
-                source "$i"
-          else
-                source "$i" >& /dev/null
-          endif
-          if ( $?SHELL_STARTUP_DEBUG ) then
-            DBG_ECHO "$DBG_INDENT}"
-          endif
-        endif
-      end
-      unset i nonomatch
-      DBG_INDENT_FUNC init   # This turns in back on.
-    endif
-
-    DBG_INDENT_FUNC down
-
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT}"
-    endif
+    DBG_ECHO "$DBG_INDENT}"
 
 ########################################################################
 #   End Shell Startup Debug

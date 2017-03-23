@@ -19,10 +19,7 @@
     DBG_INDENT_FUNC init
 
     set MY_NAME="/etc/csh.cshrc"
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT$MY_NAME{"
-    endif
-
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
     DBG_INDENT_FUNC up
 
 ########################################################################
@@ -106,34 +103,23 @@ setenv MAIL "/var/spool/mail/$USER"
     # endif
     ####################################################################
 
-    if (! $?loginsh) then
-      if ( -d /etc/profile.d ) then
-        DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
-        set nonomatch
-        foreach i ( /etc/profile.d/*.csh )
-          if ( -r $i ) then
-            if ( $?SHELL_STARTUP_DEBUG ) then
-              DBG_ECHO "$DBG_INDENT$i{"
-            endif
-            if ($?prompt) then
-                source "$i"
-            else
-                source "$i" >&/dev/null
-            endif
-            if ( $?SHELL_STARTUP_DEBUG ) then
-              DBG_ECHO "$DBG_INDENT}"
-            endif
-          endif
-        end
-        DBG_INDENT_FUNC init   # This turns in back on.
-        unset i nonomatch
+    set nonomatch
+    foreach i ( /etc/profile.d/*.csh )
+      if ( -r $i ) then
+        DBG_ECHO "$DBG_INDENT$i{"
+        if ($?prompt) then
+            source "$i"
+        else
+            source "$i" >&/dev/null
+        endif
+        DBG_ECHO "$DBG_INDENT}"
       endif
-    endif
+    end
+    unset i nonomatch
 
     DBG_INDENT_FUNC down
 
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      echo "$DBG_INDENT}"
+    DBG_ECHO "$DBG_INDENT}"
     endif
 
 ########################################################################

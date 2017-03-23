@@ -10,21 +10,17 @@
 ########################################################################
 
     if ! shopt -q login_shell; then
-      if [ -d /etc/profile.d ]; then
-        for i in /etc/profile.d/*.SH; do
-          if [ -r $i ]; then
-            . $i
-          fi
-        done
-        unset i
-      fi
+      for i in /etc/profile.d/*.SH; do
+        if [ -r $i ]; then
+          . $i
+        fi
+      done
+      unset i
       DBG_INDENT_FUNC first
     fi
 
     MY_NAME="/etc/bash.bashrc"
-    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-    fi
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
 ########################################################################
 #   End Shell Startup Debug
@@ -113,30 +109,20 @@ if ! shopt -q login_shell ; then # We're not a login shell
         DBG_INDENT_FUNC up
 
         if ! shopt -q login_shell; then
-          if [ -d /etc/profile.d ]; then
-            for i in /etc/profile.d/*.sh; do
-              if [ -r $i ]; then
-                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-                  DBG_ECHO "$DBG_INDENT$i{"
-                fi
-                DBG_INDENT_FUNC clear  # This clears the echo function if it exists
-                if [ -r "$i" ]; then
-                    if [ "$PS1" ]; then
-                        . "$i"
-                    else
-                        . "$i" >/dev/null 2>&1
-                    fi
-                fi
-                . $i
-                DBG_INDENT_FUNC init   # This turns in back on.
-                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-                  DBG_ECHO "$DBG_INDENT}"
-                fi
+          for i in /etc/profile.d/*.sh; do
+            if [ -r $i ]; then
+              DBG_ECHO "$DBG_INDENT$i{"
+              if [ -r "$i" ]; then
+                  if [ "$PS1" ]; then
+                      . "$i"
+                  else
+                      . "$i" >/dev/null 2>&1
+                  fi
               fi
-            done
-            unset i
-
-          fi
+              DBG_ECHO "$DBG_INDENT}"
+            fi
+          done
+          unset i
         fi
         DBG_INDENT_FUNC down
     ########################################################################

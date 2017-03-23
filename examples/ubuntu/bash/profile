@@ -15,12 +15,10 @@
       unset i
     fi
 
-    DBG_INDENT_FUNC first # force the creation of log file
+    DBG_INDENT_FUNC first # force the creation of log file if $SHELL_STARTUP_DEBUG > 2
     DBG_INDENT_FUNC init
     MY_NAME="/etc/profile"
-    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-    fi
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
     DBG_INDENT_FUNC up
 
@@ -36,21 +34,14 @@
     ###################################################################
 
 
-    if [ -d /etc/profile.d ]; then
-      for i in /etc/profile.d/*.sh; do
-        DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
-        if [ -r $i ]; then
-          if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-            DBG_ECHO "$DBG_INDENT$i{"
-          fi
-          . $i
-          if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-            DBG_ECHO "$DBG_INDENT}"
-          fi
-        fi
-      done
-      unset i
-    fi  
+    for i in /etc/profile.d/*.sh; do
+      if [ -r $i ]; then
+        DBG_ECHO "$DBG_INDENT$i{"
+        . $i
+        DBG_ECHO "$DBG_INDENT}"
+      fi
+    done
+    unset i
 
 ########################################################################
 #   End Shell Startup Debug
@@ -77,9 +68,7 @@ fi
 ########################################################################
     DBG_INDENT_FUNC down
 
-    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-      DBG_ECHO "$DBG_INDENT}"
-    fi  
+    DBG_ECHO "$DBG_INDENT}"
 
 ########################################################################
 #   End Shell Startup Debug
