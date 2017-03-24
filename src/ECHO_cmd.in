@@ -56,9 +56,10 @@ require("strict")
 require("fileOps")
 require("capture")
 require("string_split")
-_DEBUG       = false
-local posix  = require("posix")
-local getenv = os.getenv
+_DEBUG        = false
+local posix   = require("posix")
+local getenv  = os.getenv
+local Version = require("Version")
 
 function printArg(f,arg, T0)
    for idx,v in ipairs(arg) do
@@ -113,6 +114,7 @@ function main()
    if (f == nil) then return end
 
    if (prtDate) then
+      f:write("Shell Startup Debug Version: ",Version:name(),"\n")
       f:write("--------------------------------------------\n")
       f:write(os.date(),"\n")
       f:write("--------------------------------------------\n")
