@@ -98,7 +98,6 @@ function main()
       return
    end
 
-
    local dfltFn  = pathJoin(getenv("HOME"),"SHELL_STARTUP.log")
 
    local ssdFn   = getenv("SHELL_STARTUP_DEBUG_FN") or dfltFn

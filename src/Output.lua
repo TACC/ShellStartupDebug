@@ -61,8 +61,7 @@ function Output(shell,cmd)
    if (SSD > 2) then
       local ssdFn      = getenv("SHELL_STARTUP_DEBUG_FN")
       if (ssdFn == nil) then
-         local host    = posix.uname("%n")
-         host          = "-" .. host:gsub("%..*","")
+         local host    = "-" .. posix.uname("%n"):gsub("%..*","")
          local dateStr = "-" .. DATEString()
          local uuid    = "-" .. capture("uuidgen")
          uuid          = uuid:trim()
@@ -71,11 +70,5 @@ function Output(shell,cmd)
          envVarsT["SHELL_STARTUP_DEBUG_FN"] = ssdFn
       end
    end
-
-   --if (SSD > 2 or cmd == "clobber" ) then
-   --   shell:echo_cmd(cmd)
-   --end
-
    shell:expand(envVarsT)
-
 end
