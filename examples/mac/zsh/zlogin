@@ -17,13 +17,9 @@
      DBG_INDENT_FUNC init
 
      MY_NAME="/etc/zlogin"
-     if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-       DBG_ECHO "$DBG_INDENT$MY_NAME{"
-     fi
+     DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
-     if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-       DBG_ECHO "$DBG_INDENT}"
-     fi
+     DBG_ECHO "$DBG_INDENT}"
 
      if [ ! -f $HOME/.zlogin ]; then
        DBG_INDENT_FUNC clobber

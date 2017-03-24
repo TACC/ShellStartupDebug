@@ -12,34 +12,31 @@ fi
 #   Begin Shell Startup Debug
 ########################################################################
 
-    if [ -d /etc/profile.d ]; then
-      for i in /etc/profile.d/*.SH; do
-        if [ -r $i ]; then
-          . $i
-        fi
-      done
-      unset i
-    fi
+    # Source the shell startup debug files.
+    for i in /etc/profile.d/*.SH; do
+      if [ -r $i ]; then
+        . $i
+      fi
+    done
+    unset i
 
-    DBG_INDENT_FUNC first # force the creation of log file
+    DBG_INDENT_FUNC first # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
     DBG_INDENT_FUNC init
     MY_NAME="/etc/profile"
     DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
     DBG_INDENT_FUNC up
 
-    if [ -d /etc/profile.d ]; then
-      for i in /etc/profile.d/*.sh; do
-        DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
-        if [ -r $i ]; then
-          DBG_ECHO "$DBG_INDENT$i{"
-          . $i
-          DBG_ECHO "$DBG_INDENT}"
-        fi
-      done
-      unset i
-    fi  
-
+    for i in /etc/profile.d/*.sh; do
+      DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
+      if [ -r $i ]; then
+        DBG_ECHO "$DBG_INDENT$i{"
+        . $i
+        DBG_ECHO "$DBG_INDENT}"
+      fi
+    done
+    unset i
+ 
 ########################################################################
 #   End Shell Startup Debug
 ########################################################################

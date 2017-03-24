@@ -6,11 +6,8 @@
 #   Begin Shell Startup Debug
 ########################################################################
     set MY_NAME="/etc/csh.login"
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-      DBG_ECHO "$DBG_INDENT  Login Shell: $SHELL"
-    endif
-
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
+    DBG_ECHO "$DBG_INDENT  Login Shell: $SHELL"
 
     # /etc/csh.login: system-wide .login file for csh(1) and tcsh(1)
 
@@ -23,23 +20,18 @@
     ###################################################################
 
     # allow for other packages/system admins to customize the shell environment
-    if (-e /etc/csh/login.d && `/bin/ls /etc/csh/login.d` != "") then
-      foreach FILE (`/bin/ls /etc/csh/login.d/*`)
-        if ( $?SHELL_STARTUP_DEBUG ) then
-           DBG_ECHO "$DBG_INDENT$FILE{"
-        endif
-        source $FILE;
-        if ( $?SHELL_STARTUP_DEBUG ) then
-           DBG_ECHO "$DBG_INDENT}"
-        endif
-      end
-    endif
+    set nonomatch
+    foreach i (/etc/csh/login.d/*)
+      if ( -r $i ) then
+        DBG_ECHO "$DBG_INDENT$i{"
+        source $i;
+        DBG_ECHO "$DBG_INDENT}"
+      endif
+    end
+    unset i nonomatch
 
     DBG_INDENT_FUNC down
-
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      DBG_ECHO "$DBG_INDENT}"
-    endif
+    DBG_ECHO "$DBG_INDENT}"
 
 ########################################################################
 #   End Shell Startup Debug

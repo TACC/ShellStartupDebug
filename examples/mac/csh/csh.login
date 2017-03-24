@@ -12,15 +12,11 @@ endif
 ########################################################################
 
     set MY_NAME="/etc/csh.login"
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-    endif
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
     DBG_INDENT_FUNC down
 
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      DBG_ECHO "$DBG_INDENT}"
-    endif
+    DBG_ECHO "$DBG_INDENT}"
 
 ########################################################################
 #   Begin Shell Startup Debug

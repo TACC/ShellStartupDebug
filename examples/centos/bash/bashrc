@@ -16,7 +16,7 @@
         fi
       done
       unset i
-      DBG_INDENT_FUNC first
+      DBG_INDENT_FUNC first 
     fi
 
     MY_NAME="/etc/bash.bashrc"

@@ -13,39 +13,31 @@ fi
 #   Begin Shell Startup Debug
 ########################################################################
 
-    # Source the debug indent functions *.SH
+    # Source the shell startup debug indent functions *.SH
     if ! shopt -q login_shell; then
-      if [ -d /etc/profile.d ]; then
-        for i in /etc/profile.d/*.SH; do
-          if [ -r $i ]; then
-            . $i
-          fi
-        done
-        unset i
-      fi
-      DBG_INDENT_FUNC first
+      for i in /etc/profile.d/*.SH; do
+        if [ -r $i ]; then
+          . $i
+        fi
+      done
+      unset i
+      DBG_INDENT_FUNC first  # force the creation of log file if $SHELL_STARTUP_DEBUG > 2
     fi
 
     MY_NAME="/etc/bashrc"
-    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-    fi
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
     DBG_INDENT_FUNC up
 
     if ! shopt -q login_shell; then
-      if [ -d /etc/profile.d ]; then
-        for i in /etc/profile.d/*.sh; do
-          if [ -r $i ]; then
-            DBG_ECHO "$DBG_INDENT$i{"
-            DBG_INDENT_FUNC clear  # This clears the echo function if it exists
-            . $i
-            DBG_INDENT_FUNC init   # This turns in back on.
-            DBG_ECHO "$DBG_INDENT}"
-          fi
-        done
-        unset i
-      fi
+      for i in /etc/profile.d/*.sh; do
+        if [ -r $i ]; then
+          DBG_ECHO "$DBG_INDENT$i{"
+          . $i
+          DBG_ECHO "$DBG_INDENT}"
+        fi
+      done
+      unset i
     fi
 
     DBG_INDENT_FUNC down

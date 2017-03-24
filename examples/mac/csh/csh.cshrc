@@ -18,12 +18,11 @@ endif
 
     unset i nonomatch 
 
+    DBG_INDENT_FUNC first # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
     DBG_INDENT_FUNC init
 
     set MY_NAME="/etc/csh.cshrc"
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-    endif
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
     DBG_INDENT_FUNC up
 
@@ -50,23 +49,15 @@ endif
     set nonomatch
     foreach i ( /etc/profile.d/*.csh )
       if ( -r $i ) then
-        if ( $?SHELL_STARTUP_DEBUG ) then
-          DBG_ECHO "$DBG_INDENT$i{"
-        endif
+        DBG_ECHO "$DBG_INDENT$i{"
         source $i
-        if ( $?SHELL_STARTUP_DEBUG ) then
-          DBG_ECHO "$DBG_INDENT}"
-        endif
+        DBG_ECHO "$DBG_INDENT}"
       endif
     end
-    DBG_INDENT_FUNC init   # This turns in back on.
     unset i nonomatch
 
     DBG_INDENT_FUNC down
-
-    if ( $?SHELL_STARTUP_DEBUG ) then
-      DBG_ECHO "$DBG_INDENT}"
-    endif
+    DBG_ECHO "$DBG_INDENT}"
 
 ########################################################################
 #   End Shell Startup Debug

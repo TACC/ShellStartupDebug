@@ -9,42 +9,30 @@
 ########################################################################
 
     if ! shopt -q login_shell; then
-      if [ -d /etc/profile.d ]; then
-        for i in /etc/profile.d/*.SH; do
-          if [ -r $i ]; then
-            . $i
-          fi
-        done
-        unset i
-      fi
-      DBG_INDENT_FUNC first
+      for i in /etc/profile.d/*.SH; do
+        if [ -r $i ]; then
+          . $i
+        fi
+      done
+      unset i
+      DBG_INDENT_FUNC first # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
     fi
 
     MY_NAME="/etc/bash.bashrc"
-    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-      DBG_ECHO "$DBG_INDENT$MY_NAME{"
-    fi
+    DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
     DBG_INDENT_FUNC up
 
     if ! shopt -q login_shell; then
-      if [ -d /etc/profile.d ]; then
-        for i in /etc/profile.d/*.sh; do
-          if [ -r $i ]; then
-            if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-              DBG_ECHO "$DBG_INDENT$i{"
-            fi
-            DBG_INDENT_FUNC clear  # This clears the echo function if it exists
-            . $i
-            DBG_INDENT_FUNC init   # This turns in back on.
-            if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-              DBG_ECHO "$DBG_INDENT}"
-            fi
-          fi
-        done
-        unset i
-      fi
-    fi
+      for i in /etc/profile.d/*.sh; do
+        if [ -r $i ]; then
+          DBG_ECHO "$DBG_INDENT$i{"
+          . $i
+          DBG_ECHO "$DBG_INDENT}"
+        fi
+      done
+      unset i
+     fi
     DBG_INDENT_FUNC down
 
     # To enable the settings / commands in this file for login shells as well,
@@ -57,9 +45,7 @@
 
     # If not running interactively, don't do anything
     if [ -z "$PS1" ]; then
-      if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-        DBG_ECHO "$DBG_INDENT}"
-      fi
+      DBG_ECHO "$DBG_INDENT}"
       return
     fi  
 
@@ -132,9 +118,8 @@ fi
 #   Begin Shell Startup Debug
 ########################################################################
 
-    if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-      DBG_ECHO "$DBG_INDENT}"
-    fi  
+    DBG_ECHO "$DBG_INDENT}"
+
 ########################################################################
 #   End Shell Startup Debug
 ########################################################################
