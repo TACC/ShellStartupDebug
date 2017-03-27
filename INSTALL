@@ -19,7 +19,7 @@ A)  You must install lua first.  You have two choices:
             liblua5.1-posix0
             lua5.1
 
-      This package requires Lua 5.1 or 5.2
+      This package requires Lua 5.1, 5.2, 5.3
 
          ***** Lua 5.0 or 4.0 will NOT work. *****
 
@@ -81,26 +81,18 @@ F) Modify /etc/profile:
 
      With:
 
-       DBG_INDENT_FUNC first # force the creation of log file
-       DBG_INDENT_FUNC init
+       DBG_INDENT_FUNC init  # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
        MY_NAME="/etc/profile"
-       if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-         echo "$DBG_INDENT$MY_NAME{"
-       fi
+       DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
        DBG_INDENT_FUNC up
 
        if [ -d /etc/profile.d ]; then
          for i in /etc/profile.d/*.sh; do
-           DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
            if [ -r $i ]; then
-             if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-               DBG_ECHO "$DBG_INDENT$i{"
-             fi
+             DBG_ECHO "$DBG_INDENT$i{"
              . $i
-             if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-               DBG_ECHO "$DBG_INDENT}"
-             fi
+             DBG_ECHO "$DBG_INDENT}"
            fi
          done
          unset i
@@ -110,69 +102,50 @@ F) Modify /etc/profile:
 
 
        DBG_INDENT_FUNC down
-       if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-         DBG_ECHO "$DBG_INDENT}"
-       fi     
+       DBG_ECHO "$DBG_INDENT}"
 
 G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
 
    1) Add at the top of this file:
 
        if ! shopt -q login_shell; then
-         if [ -d /etc/profile.d ]; then
-           for i in /etc/profile.d/*.SH; do
-             if [ -r $i ]; then
-               . $i
-             fi
-           done
-           unset i
-         fi
-         DBG_INDENT_FUNC first
+         for i in /etc/profile.d/*.SH; do
+           if [ -r $i ]; then
+             . $i
+           fi
+         done
+         unset i
+         DBG_INDENT_FUNC init
        fi     
 
   2) Replace the for loop in /etc/bashrc
 
-        if [ -d /etc/profile.d ]; then
-          for i in /etc/profile.d/*.sh
-            ....
-          done
-        fi
+        for i in /etc/profile.d/*.sh
+          ...
+        done
 
      With:
 
         MY_NAME="/etc/bashrc"
-        if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-          echo "$DBG_INDENT$MY_NAME{"
-        fi
-
+        DBG_ECHO "$DBG_INDENT$MY_NAME{"
 
         DBG_INDENT_FUNC up
         
         if ! shopt -q login_shell; then
-          if [ -d /etc/profile.d ]; then
-            for i in /etc/profile.d/*.sh; do
-              if [ -r $i ]; then
-                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-                  DBG_ECHO "$DBG_INDENT$i{"
-                fi
-                DBG_INDENT_FUNC clear  # This clears the echo function if it exists
-                . $i
-                DBG_INDENT_FUNC init   # This turns in back on.
-                if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-                  DBG_ECHO "$DBG_INDENT}"
-                fi
-              fi
-            done
-            unset i
-          fi
+          for i in /etc/profile.d/*.sh; do
+            if [ -r $i ]; then
+              DBG_ECHO "$DBG_INDENT$i{"
+              . $i
+              DBG_ECHO "$DBG_INDENT}"
+            fi
+          done
+          unset i
         fi      
         DBG_INDENT_FUNC down
 
   3) Add at the bottom:
 
-        if [ -n "${SHELL_STARTUP_DEBUG+x}" ]; then
-           DBG_ECHO "$DBG_INDENT}"
-        fi
+        DBG_ECHO "$DBG_INDENT}"
 
     Note many /etc/bashrc have line like:
 
@@ -185,18 +158,10 @@ H) Things to double check in your /etc/bashrc (or /etc/bash.bashrc) and
       1) Every place you have $DBG_INDENT you have a DBG_ECHO
       2) Make sure that you have a "DBG_INDENT_FUNC up"  and a
          matching "DBG_INDENT_FUNC down" in both /etc/bashrc
-<<<<<<< HEAD
          (or /etc/bash.bashrc) and /etc/profile.
-=======
-         and /etc/profile
 
 I) You'll need to setup zsh similarily.  See examples/*/zsh
    directories as guides.
 
 J) Feel free to similarly modify csh.login and csh.cshrc. See examples/*/csh
    directories as guides.
-
->>>>>>> ab6b39a84619a98bbfd23ad1368fadc575df835a
-
-I) You'll need to setup zsh and csh similarily.  See the examples directory
-   for modified version for all shell.

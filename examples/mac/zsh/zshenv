@@ -32,9 +32,7 @@ fi
        unset i
      fi
 
-
-     DBG_INDENT_FUNC first # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
-     DBG_INDENT_FUNC init
+     DBG_INDENT_FUNC init  # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
      MY_NAME="/etc/zshenv"
      DBG_ECHO "$DBG_INDENT$MY_NAME{"
 

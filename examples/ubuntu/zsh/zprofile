@@ -12,8 +12,6 @@
 #   Begin Shell Startup Debug
 ########################################################################
 
-    DBG_INDENT_FUNC init
-
     MY_NAME="/etc/zsh/zprofile"
     DBG_ECHO "$DBG_INDENT$MY_NAME{"
 

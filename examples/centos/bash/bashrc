@@ -16,7 +16,7 @@
         fi
       done
       unset i
-      DBG_INDENT_FUNC first 
+      DBG_INDENT_FUNC init 
     fi
 
     MY_NAME="/etc/bash.bashrc"
@@ -109,18 +109,17 @@ if ! shopt -q login_shell ; then # We're not a login shell
         DBG_INDENT_FUNC up
 
         if ! shopt -q login_shell; then
-          for i in /etc/profile.d/*.sh; do
-            if [ -r $i ]; then
-              DBG_ECHO "$DBG_INDENT$i{"
-              if [ -r "$i" ]; then
-                  if [ "$PS1" ]; then
-                      . "$i"
-                  else
-                      . "$i" >/dev/null 2>&1
-                  fi
-              fi
-              DBG_ECHO "$DBG_INDENT}"
+          if [ -r $i ]; then
+            DBG_ECHO "$DBG_INDENT$i{"
+            if [ -r "$i" ]; then
+                if [ "$PS1" ]; then
+                    . "$i"
+                else
+                    . "$i" >/dev/null 2>&1
+                fi
             fi
+            DBG_ECHO "$DBG_INDENT}"
+          fi
           done
           unset i
         fi

@@ -92,7 +92,7 @@ fi
     for i in /etc/profile.d/*.sh; do
       if [ -r $i ]; then
         DBG_ECHO "$DBG_INDENT$i{"
-        if [ "${-#*i}" != "$-" ]; then
+        if [[ "${-#*i}" != "$-" ]; then
             . "$i"
         else
             . "$i" >/dev/null 2>&1

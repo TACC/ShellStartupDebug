@@ -15,7 +15,7 @@
         fi
       done
       unset i
-      DBG_INDENT_FUNC first # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
+      DBG_INDENT_FUNC init # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
     fi
 
     MY_NAME="/etc/bash.bashrc"

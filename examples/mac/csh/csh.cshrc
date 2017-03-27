@@ -18,8 +18,7 @@ endif
 
     unset i nonomatch 
 
-    DBG_INDENT_FUNC first # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
-    DBG_INDENT_FUNC init
+    DBG_INDENT_FUNC init  # force the creation of the log file if $SHELL_STARTUP_DEBUG > 2
 
     set MY_NAME="/etc/csh.cshrc"
     DBG_ECHO "$DBG_INDENT$MY_NAME{"
