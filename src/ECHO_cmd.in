@@ -90,6 +90,11 @@ function main()
 
    if (#arg == 0) then return end
 
+   if (#arg == 1 and arg[1] == "-") then
+      arg[1] = io.stdin:read("*a")
+   end
+
+
    local T0 = tonumber(getenv("SHELL_STARTUP_DEBUG_T0") or "0")
 
    local ssd = tonumber(getenv("SHELL_STARTUP_DEBUG") or "0")
