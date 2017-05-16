@@ -103,14 +103,16 @@ _distSrc:
 _distSetup:
 	mkdir $(DistD)/setup
 	cp $(SHELL_INIT) $(DistD)/setup
-	sed -i '' 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/setup/*
+	sed -i.bak 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/setup/*
+	rm $(DistD)/setup/*.bak
 
 _distExamples:
 	mkdir $(DistD)/examples
 	cp -r examples/* $(DistD)/examples
 
 _distVersion:
-	sed -i '' 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/src/Version.lua
+	sed -i.bak 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/src/Version.lua
+        rm $(DistD)/src/Version.lua.bak
 
 _distTools:
 	mkdir $(DistD)/tools
