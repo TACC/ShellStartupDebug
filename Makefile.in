@@ -112,7 +112,7 @@ _distExamples:
 
 _distVersion:
 	sed -i.bk 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/src/Version.lua
-        rm $(DistD)/src/Version.lua.bk
+	rm $(DistD)/src/Version.lua.bk
 
 _distTools:
 	mkdir $(DistD)/tools
