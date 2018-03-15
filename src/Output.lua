@@ -32,17 +32,17 @@
 --  THE SOFTWARE.
 --
 --------------------------------------------------------------------------
+_DEBUG          = false
+local posix     = require("posix")
 
-
+require("strict")
 require("capture")
 require("fileOps")
 require("string_trim")
 
-_DEBUG          = false
 local getenv    = os.getenv
 local io        = io
 local BaseShell = require("BaseShell")
-local posix     = require("posix")
 
 function DATEString()
    local ymd  = os.date("*t")

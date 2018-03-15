@@ -27,12 +27,12 @@
 --------------------------------------------------------------------------
 -- Capture:  use io.popen to open a pipe to collect the output of a
 --           command.  
+_DEBUG      = false
+local posix = require("posix")
 
 require("strict")
 
-_DEBUG      = false
 local dbg   = require("Dbg"):dbg()
-local posix = require("posix")
 function capture(cmd,level)
    level        = level or 1
    local level2 = level or 2

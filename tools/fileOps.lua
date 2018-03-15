@@ -28,11 +28,12 @@
 -- fileOps: A collection of useful file operations.
 
 
+_DEBUG          = false
+local posix     = require("posix")
+
 require("strict")
 require("string_trim")
 require("string_split")
-_DEBUG          = false
-local posix     = require("posix")
 local lfs       = require("lfs")
 local concatTbl = table.concat
 

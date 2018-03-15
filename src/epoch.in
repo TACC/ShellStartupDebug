@@ -1,5 +1,8 @@
 #!@path_to_lua@/lua
 -- -*- lua -*-
+_DEBUG      = false
+local posix = require("posix")
+
 local LuaCommandName = arg[0]
 local i,j = LuaCommandName:find(".*/")
 local LuaCommandName_dir = "./"
@@ -12,9 +15,7 @@ package.path = LuaCommandName_dir .. "../tools/?.lua;" ..
                package.path
 
 require("strict")
-_DEBUG      = false
 local epoch = false
-local posix = require("posix")
 function build_epoch()
    if (posix.gettimeofday) then
       local x1, x2 = posix.gettimeofday()

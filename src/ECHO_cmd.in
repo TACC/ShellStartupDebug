@@ -40,6 +40,8 @@
 ------------------------------------------------------------------------
 -- Use command name to add the command directory to the package.path
 ------------------------------------------------------------------------
+_DEBUG        = false
+local posix   = require("posix")
 local LuaCommandName = arg[0]
 local i,j = LuaCommandName:find(".*/")
 local LuaCommandName_dir = "./"
@@ -56,8 +58,6 @@ require("strict")
 require("fileOps")
 require("capture")
 require("string_split")
-_DEBUG        = false
-local posix   = require("posix")
 local getenv  = os.getenv
 local Version = require("Version")
 
