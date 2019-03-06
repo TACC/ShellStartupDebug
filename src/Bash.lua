@@ -52,7 +52,7 @@ function Bash.expand(self, tbl)
       else
          lineA[#lineA + 1] = k
          lineA[#lineA + 1] = "='"
-         lineA[#lineA + 1] = v
+         lineA[#lineA + 1] = tostring(v)
          lineA[#lineA + 1] = "';\n"
          lineA[#lineA + 1] = "export "
          lineA[#lineA + 1] = k
