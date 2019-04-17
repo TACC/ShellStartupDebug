@@ -37,5 +37,16 @@ If you wish to create a file instead of writing to standard out, change the valu
 There will be a separate file for each shell invocation.
 
 
+For users wishing to track a particular environment variable through the startup process can do can add
+
+   export SHELL_STARTUP_DEBUG_PRINT_LIST="var1:var2:var3"
+
+to your ~/.init.sh file where var1 etc are the variables you wish to track. For example one might like
+to track the PATH and MODULEPATH variables through startup:
+
+   export SHELL_STARTUP_DEBUG_PRINT_LIST="PATH:MODULEPATH"
+
+In this case the state of each variable is printed out after every '}' if it has a value.
+
 See INSTALL for instructions.
 

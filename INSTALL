@@ -155,7 +155,7 @@ G) Modify /etc/bashrc.  Note that this file might be called /etc/bash.bashrc.
 
 H) Things to double check in your /etc/bashrc (or /etc/bash.bashrc) and
    /etc/profile:
-      1) Every place you have $DBG_INDENT you have a DBG_ECHO
+      1) Every place you have DBG_INDENT you have a DBG_ECHO
       2) Make sure that you have a "DBG_INDENT_FUNC up"  and a
          matching "DBG_INDENT_FUNC down" in both /etc/bashrc
          (or /etc/bash.bashrc) and /etc/profile.
