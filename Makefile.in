@@ -1,11 +1,12 @@
+srcdir          := @srcdir@
 PATH_TO_LUA	:= @PATH_TO_LUA@
+version		:= $(shell cd $(srcdir)/src; $(PATH_TO_LUA)/lua -e "V=require('Version'); print(V.tag())")
 VERSION_SRC	:= src/Version.lua
 VERSION_LIB	:= $(subst .lua,,$(VERSION_SRC))
 GIT_PROG        := @PATH_TO_GIT@
 GIT_VERSION     := $(shell if [ -n "$(GIT_PROG)" -a -d .git ]; then ssdV=`git describe --always`; echo "($$ssdV)"; else echo "@git@"; fi)
 prefix		:= @prefix@
 package		:= shell_startup_debug
-version		:= $(shell cd ./src; $(PATH_TO_LUA)/lua -e "V=require('Version'); print(V.tag())")
 PKG		:= $(prefix)/$(package)/$(package)
 LIBEXEC		:= $(prefix)/$(package)/$(version)/libexec
 TOOLS		:= $(prefix)/$(package)/$(version)/tools
@@ -87,52 +88,19 @@ makefile: Makefile.in config.status
 config.status:
 	./configure
 
-dist:  
-	$(MAKE) DistD=DIST _dist
-
-_dist: _distMkDir _distMainDir _distSrc _distVersion _distSetup _distExamples _distTools _distTar
-
-_distMkDir:
-	$(RM) -r $(DistD)
-	mkdir $(DistD)
-
-_distSrc:
-	mkdir $(DistD)/src
-	cp $(lua_code) $(LIBEXEC_CMDS) $(INIT_FILES) $(DistD)/src
-
-_distSetup:
-	mkdir $(DistD)/setup
-	cp $(SHELL_INIT) $(DistD)/setup
-	sed -i.bk 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/setup/*
-	rm $(DistD)/setup/*.bk
-
-_distExamples:
-	mkdir $(DistD)/examples
-	cp -r examples/* $(DistD)/examples
-
-_distVersion:
-	sed -i.bk 's/\@git\@/$(GIT_VERSION)/g' $(DistD)/src/Version.lua
-	rm $(DistD)/src/Version.lua.bk
-
-_distTools:
-	mkdir $(DistD)/tools
-	cp tools/*.lua $(DistD)/tools
-
-_distMainDir:
-	cp $(MAIN_DIR) $(DistD)
-
-_distMF:
-	mkdir $(DistD)/mf
-	cp -r mf $(DistD)/mf
-	find $(DistD)/mf -name .svn | xargs rm -rf 
-
-_distTar:
-	echo "shell_startup_debug"-$(version) > .fname;                	   \
-	$(RM) -r `cat .fname` `cat .fname`.tar*;         		   \
-	mv ${DistD} `cat .fname`;                            		   \
-	tar chf `cat .fname`.tar `cat .fname`;           		   \
-	gzip `cat .fname`.tar;                           		   \
-	rm -rf `cat .fname` .fname; 
+dist:
+	GIT_BRANCH=`git status | head -n 1 | sed -e 's/^[# ]*On branch //g' -e 's/^[# ]*HEAD detached at//g'`  ; \
+	git archive --prefix=ssd-$(version)/ $$GIT_BRANCH > ssd-$(version).tar                                 ; \
+        $(RM) -rf DIST                                                                                         ; \
+        mkdir DIST                                                                                             ; \
+        cd DIST                                                                                                ; \
+        tar xf ../ssd-$(version).tar                                                                           ; \
+        find ssd-$(version) -type f      -print0 | xargs -0 sed -i.bk 's/\@git\@/$(GIT_VERSION)/g'             ; \
+        find ssd-$(version) -name '*.bk' -exec rm -f {} \;                                                     ; \
+        $(RM) ../ssd-$(version).tar                                                                            ; \
+        mv ssd-$(version) shell_startup_debug-$(version)                                                       ; \
+        tar cjf ../shell_startup_debug-$(version).tar.bz2 shell_startup_debug-$(version)                       ; \
+	cd ..; $(RM) -rf DIST
 
 
 world_update:
