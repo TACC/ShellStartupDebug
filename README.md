@@ -7,7 +7,7 @@ Once installed, any user can create a file (`~/.init.sh` for bash, zsh, etc) and
 (`~/.init.csh` for csh and tcsh) that will turn on the report of the startup
 behavior.
 
-Bash users: Please put in `~/.init.sh`:
+Bash/Zsh users: Please put in `~/.init.sh`:
 
 ```
    export SHELL_STARTUP_DEBUG=1
@@ -36,7 +36,8 @@ A bash user will see something like the following for output:
     } Time = 0.3156
 ```
 
-If you wish to create a file instead of writing to standard out, change the value:
+If you wish to create a file instead of writing to standard out, change the value for SHELL_STARTUP_DEBUG
+to 3 in the bash or zsh shell: 
 
 ```
    export SHELL_STARTUP_DEBUG=3
