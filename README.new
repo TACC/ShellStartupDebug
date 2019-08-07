@@ -2,4 +2,6 @@ Shell Startup Debug 2.0+
    (2.0) * Use git archive to produce tar ball
          * Fix configure.ac and Bash.lua to not depend on auto string to number conversions
 	 * Require luaposix outside of strict
+   (2.1) * Fix DBG_INDENT_cmd.in so that it handles the lua posix module outside of strict
+   
 	 
