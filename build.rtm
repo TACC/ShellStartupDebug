@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xv
 # -*- shell-script -*-
 VERSION=`(cd src; lua -e "local Version=require('Version'); print(Version.name())") | awk '{print $1}'` 
 echo Making Version: $VERSION
@@ -33,7 +33,7 @@ if [ "$?" = 0 ]; then
   MAKE=remake
 fi
 
-host=$(expr $(hostname) : "\([^.][^.]*\)")
+host=$(expr $(hostname -f) : "\([^.][^.]*\)")
 
 case $host in
     mclay-d630 | mijo | jedrik | vato | vmijo | rios)
