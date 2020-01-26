@@ -41,6 +41,7 @@
 -- Use command name to add the command directory to the package.path
 ------------------------------------------------------------------------
 _DEBUG        = false
+local format  = string.format
 local posix   = require("posix")
 local LuaCommandName = arg[0]
 local i,j = LuaCommandName:find(".*/")
@@ -54,19 +55,32 @@ package.path = LuaCommandName_dir .. "../tools/?.lua;" ..
                package.path
 
 
+local master = {}
+
+function masterTbl()
+   return master
+end
+
+BaseShell = require("BaseShell")
+
 require("strict")
 require("fileOps")
 require("capture")
 require("string_split")
-local getenv  = os.getenv
-local Version = require("Version")
+local getenv       = os.getenv
+local Version      = require("Version")
+local version      = Version.name
+local setenv_posix = posix.setenv
+local concatTbl    = table.concat
 
-function printArg(f,arg, T0)
+function printArg(f, arg, T0, Tprev, T1)
+   local endBlk = false
+   local sA        = {}
    for idx,v in ipairs(arg) do
       local i,j = v:find("}")
 
       if ( idx == 1 and j ) then
-         local indent = v:sub(1,j-1) .. "  "
+         local indent    = v:sub(1,j-1) .. "  "
          local printList = getenv("SHELL_STARTUP_DEBUG_PRINT_LIST") or ""
          for var in printList:split(":") do
             local v = getenv(var)
@@ -74,16 +88,28 @@ function printArg(f,arg, T0)
                f:write(indent,var,": ",v,"\n")
             end
          end
-
-         local T1 = tonumber(capture("@PKG@/libexec/epoch"))
          local s  = string.format("%.4f",T1 - T0)
-         f:write(v," Time = ",s)
+         sA[#sA + 1] = v
+         sA[#sA + 1] = " Time = "
+         sA[#sA + 1] = s
+         local line  = concatTbl(sA,"")
+         local myLen = 50 - line:len()
+         local gap   = " "
+         if (myLen > 0) then
+            gap = gap:rep(myLen)
+         end            
+         sA[#sA + 1] = gap
+         sA[#sA + 1] = format("(delta = %.4f)", T1 - Tprev)
+         endBlk = true
       else
-         f:write(v)
+         sA[#sA + 1] = v
       end
    end
-   f:write("\n")
+   f:write(concatTbl(sA,""),"\n")
+   return endBlk
 end
+
+
 
 
 function main()
@@ -94,37 +120,62 @@ function main()
       arg[1] = io.stdin:read("*a")
    end
 
+   local Optiks        = require("Optiks")
+   local usage         = "Usage: ECHO_cmd [options] [up|down]"
+   local cmdlineParser = Optiks:new{usage=usage, version=format("ECHO_cmd %s",version())}
 
-   local T0 = tonumber(getenv("SHELL_STARTUP_DEBUG_T0") or "0")
+   cmdlineParser:add_option{ 
+      name    = {'-s','--shell'},
+      dest    = 'shellNm',
+      action  = 'store',
+      type    = 'string',
+      default = 'bash',
+   }
 
-   local ssd = tonumber(getenv("SHELL_STARTUP_DEBUG") or "0")
-   if (ssd < 3) then
-      printArg(io.stderr, arg, T0)
-      return
+   local optionTbl, pargs = cmdlineParser:parse(arg)
+
+   local masterTbl   = masterTbl()
+   for v in pairs(optionTbl) do
+      masterTbl[v]   = optionTbl[v]
+   end
+   masterTbl.pargs   = pargs
+   masterTbl.shellNm = barefilename(masterTbl.shellNm)
+   local shell       = BaseShell.build(masterTbl.shellNm)
+
+   local T0    = tonumber(getenv("SHELL_STARTUP_DEBUG_T0") or "0")
+   local Tprev = tonumber(getenv("SHELL_STARTUP_DEBUG_PREV") or T0)
+   local T1    = tonumber(capture("@PKG@/libexec/epoch"))
+
+   local ssd   = tonumber(getenv("SHELL_STARTUP_DEBUG") or "0")
+   local f     = io.stderr
+
+   if (ssd == 3) then
+      local dfltFn  = pathJoin(getenv("HOME"),"SHELL_STARTUP.log")
+      local ssdFn   = getenv("SHELL_STARTUP_DEBUG_FN") or dfltFn
+      f             = io.open(ssdFn, "r")
+      local prtDate = false
+      if (f == nil) then
+         prtDate = true
+      end
+      f             = io.open(ssdFn, "a")
+
+      ---------------------------------------------------------
+      -- if you can not open a file then do not print anything.
+      if (f == nil) then return end
+      if (prtDate) then
+         f:write("Shell Startup Debug Version: ",Version:name(),"\n")
+         f:write("--------------------------------------------\n")
+         f:write(os.date(),"\n")
+         f:write("--------------------------------------------\n")
+      end
    end
 
-   local dfltFn  = pathJoin(getenv("HOME"),"SHELL_STARTUP.log")
-
-   local ssdFn   = getenv("SHELL_STARTUP_DEBUG_FN") or dfltFn
-   local f       = io.open(ssdFn, "r")
-   local prtDate = false
-   if (f == nil) then
-      prtDate = true
+   local endBlk = printArg(f,masterTbl.pargs, T0, Tprev, T1)
+   if (endBlk) then
+      local envVarT = {}
+      envVarT["SHELL_STARTUP_DEBUG_PREV"] = string.format("%.4f",T1)
+      shell:expand(envVarT)
    end
-   f             = io.open(ssdFn, "a")
-
-   ---------------------------------------------------------
-   -- if you can not open a file then do not print anything.
-   if (f == nil) then return end
-
-   if (prtDate) then
-      f:write("Shell Startup Debug Version: ",Version:name(),"\n")
-      f:write("--------------------------------------------\n")
-      f:write(os.date(),"\n")
-      f:write("--------------------------------------------\n")
-   end
-   printArg(f,arg, T0)
-
    f:close()
 end
 

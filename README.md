@@ -24,16 +24,16 @@ A bash user will see something like the following for output:
 ```
    /etc/profile{
       /etc/profile.d/bash_completion.sh{
-      } Time = 0.0550
+      } Time = 0.0550                      (delta = 0.0550)
       /etc/profile.d/lmod.sh{
-      } Time = 0.0770
+      } Time = 0.0770                      (delta = 0.0220)
       /etc/profile.d/modules.sh{
-      } Time = 0.0997
+      } Time = 0.0997                      (delta = 0.0227)
       /etc/profile.d/z99_PrgEnv.sh{
-      } Time = 0.2067
+      } Time = 0.2067                      (delta = 0.1030)
       /etc/bash.bashrc{
-      } Time = 0.2338
-    } Time = 0.3156
+      } Time = 0.2338                      (delta = 0.0271)
+    } Time = 0.2442                        (delta = 0.0104)
 ```
 
 If you wish to create a file instead of writing to standard out, change the value for SHELL_STARTUP_DEBUG
