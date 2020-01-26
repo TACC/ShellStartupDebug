@@ -69,8 +69,8 @@ function  M.options(self)
 
 
    local masterTbl     = masterTbl()
-   local usage         = "Usage: settarg [options] [up|down]"
-   local cmdlineParser = Optiks:new{usage=usage, version=format("settarg %s",version())}
+   local usage         = "Usage: DBG_INDENT [options] [up|down]"
+   local cmdlineParser = Optiks:new{usage=usage, version=format("DBG_INDENT %s",version())}
 
    cmdlineParser:add_option{ 
       name    = {'-s','--shell'},
