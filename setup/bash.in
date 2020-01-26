@@ -30,6 +30,6 @@ if [ -n "${SHELL_STARTUP_DEBUG:-}" ]; then
   }   
   DBG_ECHO()
   {
-     @PKG@/libexec/ECHO_cmd "$@"
+     eval `@PKG@/libexec/ECHO_cmd -s bash "$@"`
   }
 fi
