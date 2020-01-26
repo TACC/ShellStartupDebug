@@ -54,7 +54,7 @@ function DATEString()
    return uuid
 end
 
-function Output(shell,cmd)
+function Output(shell)
    local masterTbl  = masterTbl()
    local envVarsT   = masterTbl.envVarsT
    local SSD        = tonumber(getenv("SHELL_STARTUP_DEBUG")) or 0

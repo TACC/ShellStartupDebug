@@ -132,7 +132,7 @@ function main()
 
    build_indent(cmd)
 
-   Output(shell,cmd)
+   Output(shell)
 end
 
 main()
