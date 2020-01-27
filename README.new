@@ -3,5 +3,7 @@ Shell Startup Debug 2.0+
          * Fix configure.ac and Bash.lua to not depend on auto string to number conversions
 	 * Require luaposix outside of strict
    (2.1) * Fix DBG_INDENT_cmd.in so that it handles the lua posix module outside of strict
+   (2.2) * Print the delta's between steps
+   (2.3) * Fix bug in csh alias for DBG_ECHO
    
 	 
