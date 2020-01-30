@@ -14,6 +14,10 @@ DBG_INDENT_FUNC()
 {
   true
 }
+DBG_RESET_DELTA_TIMER()
+{
+  true
+}
 
 if [ -f $HOME/.init.sh ]; then
   . $HOME/.init.sh
