@@ -5,16 +5,16 @@
 
 DBG_INDENT=""
 
-DBG_ECHO()
+function DBG_ECHO ()
 {
   true
 }
 
-DBG_INDENT_FUNC()
+function DBG_INDENT_FUNC ()
 {
   true
 }
-DBG_RESET_DELTA_TIMER()
+function DBG_RESET_DELTA_TIMER ()
 {
   true
 }
@@ -27,16 +27,16 @@ fi
 
 if [ -n "${SHELL_STARTUP_DEBUG:-}" ]; then
   export SHELL_STARTUP_DEBUG_T0=$(@PKG@/libexec/epoch)
-  DBG_INDENT_FUNC()
+  function DBG_INDENT_FUNC ()
   {
     eval `@PKG@/libexec/DBG_INDENT_cmd -s bash "$@"`;
     DBG_INDENT=$(printf $DBG_INDENT_FMT "$DBG_INDENT_ARG");
   }   
-  DBG_ECHO()
+  function DBG_ECHO ()
   {
      eval `@PKG@/libexec/ECHO_cmd -s bash "$@"`
   }
-  DBG_RESET_DELTA_TIMER()
+  function DBG_RESET_DELTA_TIMER ()
   {
     export SHELL_STARTUP_DEBUG_PREV=$(@PKG@/libexec/epoch)
   }
