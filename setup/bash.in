@@ -32,4 +32,9 @@ if [ -n "${SHELL_STARTUP_DEBUG:-}" ]; then
   {
      eval `@PKG@/libexec/ECHO_cmd -s bash "$@"`
   }
+  DBG_RESET_DELTA_TIMER()
+  {
+    export SHELL_STARTUP_DEBUG_PREV=$(@PKG@/libexec/epoch)
+  }
+
 fi

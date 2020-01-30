@@ -21,6 +21,8 @@ if ( $?SHELL_STARTUP_DEBUG ) then
   alias DBG_INDENT_FUNC 'eval `'$exec_prefix'/libexec/DBG_INDENT_cmd -s csh \!*`;set DBG_INDENT="`printf $DBG_INDENT_FMT $DBG_INDENT_ARG`"'
   unalias DBG_ECHO
   alias   DBG_ECHO 'eval `'$exec_prefix'/libexec/ECHO_cmd -s csh \!*`'
+  alias   DBG_RESET_DELTA_TIMER 'setenv  SHELL_STARTUP_DEBUG_PREV `@PKG@/libexec/epoch`'
+
 endif
 
 unset exec_prefix
