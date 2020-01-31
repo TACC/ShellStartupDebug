@@ -106,21 +106,24 @@ if ! shopt -q login_shell ; then # We're not a login shell
         # done
         ####################################################################
 
-        DBG_INDENT_FUNC up
+     	source_this()
+     	{
+     	  f=$1
+     	  if [ -r $f -a ! -k $f ]; then
+     	    DBG_ECHO "$DBG_INDENT$f{"
+     	    . "$f"
+     	    DBG_ECHO "$DBG_INDENT}"
+     	  fi
+     	}   
+     
+	DBG_INDENT_FUNC up
 
         if ! shopt -q login_shell; then
-          if [ -r $i ]; then
-            DBG_ECHO "$DBG_INDENT$i{"
-            if [ -r "$i" ]; then
-                if [ "$PS1" ]; then
-                    . "$i"
-                else
-                    . "$i" >/dev/null 2>&1
-                fi
-            fi
-            DBG_ECHO "$DBG_INDENT}"
-          fi
-          done
+	  DBG_RESET_DELTA_TIMER  # Reset the delta timer so that the time on the
+                                 # 1st first file sourced is just for it.
+	  for i in /etc/profile.d/*.sh; do
+	    source_this $i
+	  done
           unset i
         fi
         DBG_INDENT_FUNC down

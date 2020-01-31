@@ -21,6 +21,8 @@
 
     # allow for other packages/system admins to customize the shell environment
     set nonomatch
+    DBG_RESET_DELTA_TIMER  # Reset the delta timer so that the time on the
+                           # 1st first file sourced is just for it.
     foreach i (/etc/csh/login.d/*)
       if ( -r $i ) then
         DBG_ECHO "$DBG_INDENT$i{"

@@ -45,6 +45,8 @@ endif
     # Check if we aren't a loginshell and then source the startup files (*.csh)
     DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
 
+    DBG_RESET_DELTA_TIMER  # Reset the delta timer so that the time on the
+                           # 1st first file sourced is just for it.
     set nonomatch
     foreach i ( /etc/profile.d/*.csh )
       if ( -r $i ) then

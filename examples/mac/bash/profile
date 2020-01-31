@@ -26,6 +26,8 @@ fi
 
     DBG_INDENT_FUNC up
 
+    DBG_RESET_DELTA_TIMER  # Reset the delta timer so that the time on the
+                           # 1st first file sourced is just for it.
     for i in /etc/profile.d/*.sh; do
       DBG_INDENT_FUNC clear  # This clears the echo function/alias if it exists
       if [ -r $i ]; then

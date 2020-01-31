@@ -24,6 +24,8 @@
     DBG_INDENT_FUNC up
 
     if ! shopt -q login_shell; then
+      DBG_RESET_DELTA_TIMER  # Reset the delta timer so that the time on the
+                             # 1st first file sourced is just for it.
       for i in /etc/profile.d/*.sh; do
         if [ -r $i ]; then
           DBG_ECHO "$DBG_INDENT$i{"

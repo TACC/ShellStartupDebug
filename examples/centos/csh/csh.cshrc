@@ -104,6 +104,9 @@ setenv MAIL "/var/spool/mail/$USER"
     ####################################################################
 
     set nonomatch
+
+    DBG_RESET_DELTA_TIMER  # Reset the delta timer so that the time on the
+                           # 1st first file sourced is just for it.
     foreach i ( /etc/profile.d/*.csh )
       if ( -r $i ) then
         DBG_ECHO "$DBG_INDENT$i{"
