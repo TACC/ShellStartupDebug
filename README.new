@@ -5,5 +5,5 @@ Shell Startup Debug 2.0+
    (2.1) * Fix DBG_INDENT_cmd.in so that it handles the lua posix module outside of strict
    (2.2) * Print the delta's between steps
    (2.3) * Fix bug in csh alias for DBG_ECHO
+   (2.4) * Added DBG_RESET_DELTA_TIMER function/alias.
    
-	 
