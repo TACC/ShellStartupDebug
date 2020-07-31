@@ -6,4 +6,4 @@ Shell Startup Debug 2.0+
    (2.2) * Print the delta's between steps
    (2.3) * Fix bug in csh alias for DBG_ECHO
    (2.4) * Added DBG_RESET_DELTA_TIMER function/alias.
-   
+   (2.5) * Support for Lua 5.4
