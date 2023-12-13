@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/usr/bin/csh
 # -*- shell-script -*-
 # /etc/csh.login
 
