@@ -1,6 +1,12 @@
 ------------------------------------------------------------------------
+-- Create a new class that inherits from a [[baseClass]]
+-- @module inherits
+
+require("strict")
+
+------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2013 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -24,10 +30,11 @@
 --
 --------------------------------------------------------------------------
 
-------------------------------------------------------------------------
--- Create a new class that inherits from a [[baseClass]]
-------------------------------------------------------------------------
 
+--------------------------------------------------------------------------
+-- Inherit from Base Class.
+-- @param baseClass A lua base class object.
+-- @return derived class object
 function inheritsFrom( baseClass )
 
     -- The following lines are equivalent to the SimpleClass example:

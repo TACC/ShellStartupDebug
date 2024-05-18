@@ -66,7 +66,7 @@ BaseShell = require("BaseShell")
 require("strict")
 require("fileOps")
 require("capture")
-require("string_split")
+require("string_utils")
 local getenv       = os.getenv
 local Version      = require("Version")
 local version      = Version.name

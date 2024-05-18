@@ -1,6 +1,16 @@
-------------------------------------------------------------------------
+require("strict")
+
+--------------------------------------------------------------------------
+-- Lmod License
+--------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2013 Robert McLay
+--  Lmod is licensed under the terms of the MIT license reproduced below.
+--  This means that Lmod is free software and can be used for both academic
+--  and commercial purposes at absolutely no cost.
+--
+--  ----------------------------------------------------------------------
+--
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -24,16 +34,22 @@
 --
 --------------------------------------------------------------------------
 
---------------------------------------------------------------------------
--- string:trim(): remove leading and trailing spaces.
+local term = nil
+if (pcall(require,"term")) then
+   term = require("term")
+end
+local s_init     = true
+local s_haveTerm = false
+local getenv     = os.getenv
+function haveTermSupport()
 
-function string:trim()
-   local ja = self:find("%S")
-   if (ja == nil) then
-      return ""
+   if (s_init) then
+      s_init     = false
+      s_haveTerm = (term ~= nil)
    end
-   local  jb = self:find("%s+$") or 0
-   local  s  = self:sub(ja,jb-1)
-   return s
+   return s_haveTerm
 end
 
+function connected2Term()
+   return haveTermSupport() and getenv("TERM") and term.isatty(io.stderr)
+end

@@ -1,6 +1,14 @@
+--------------------------------------------------------------------------
+-- use io.popen to open a pipe to collect the output of a command.
+-- @module capture
+_DEBUG      = false
+local posix = require("posix")
+
+require("strict")
+
 ------------------------------------------------------------------------
 --
---  Copyright (C) 2008-2013 Robert McLay
+--  Copyright (C) 2008-2014 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -24,31 +32,27 @@
 --
 --------------------------------------------------------------------------
 
---------------------------------------------------------------------------
--- Capture:  use io.popen to open a pipe to collect the output of a
---           command.  
-_DEBUG      = false
-local posix = require("posix")
-
-require("strict")
 
 local dbg   = require("Dbg"):dbg()
-function capture(cmd,level)
-   level        = level or 1
-   local level2 = level or 2
-   dbg.start(level, "capture")
-   dbg.print("cwd: ",posix.getcwd(),"\n")
-   dbg.print("cmd: ",cmd,"\n")
+
+
+--------------------------------------------------------------------------
+-- Capture stdout from *cmd*
+-- @param cmd a string that contains a unix command.
+
+function capture(cmd)
+   dbg.start{"capture(",cmd,")"}
+   dbg.print{"cwd: ",posix.getcwd(),"\n",level=2}
    local p = io.popen(cmd)
    if p == nil then
       return nil
    end
    local ret = p:read("*all")
    p:close()
-   dbg.start(level2,"capture output")
-   dbg.print(ret)
-   dbg.fini()
-   dbg.fini()
+   dbg.start{"capture output()",level=2}
+   dbg.print{ret}
+   dbg.fini("capture output")
+   dbg.fini("capture")
    return ret
 end
 

@@ -1,6 +1,15 @@
+--------------------------------------------------------------------------
+-- Use tput cols to find the number of columns.  Then check
+-- stderr to see if it is connected to a tty.  If not then
+-- use 80 columns wide as default.
+--
+-- @module TermWidth
+
+require("strict")
+
 -----------------------------------------------------------------------
 --
---  Copyright (C) 2008-2013 Robert McLay
+--  Copyright (C) 2008-2018 Robert McLay
 --
 --  Permission is hereby granted, free of charge, to any person obtaining
 --  a copy of this software and associated documentation files (the
@@ -24,33 +33,68 @@
 --
 --------------------------------------------------------------------------
 
---------------------------------------------------------------------------
--- TermWidth(): Use tput cols to find the number of columns.  Then check
---              stderr to see if it is connected to a tty.  If not then
---              use 80 columns wide as default.
 
-require("strict")
+require("haveTermSupport")
 require("capture")
 local capture = capture or function (s) return nil end
 local getenv  = os.getenv
 local term    = false
 local s_width = false
+local min     = math.min
 local s_DFLT  = 80
-if (pcall(require,"term")) then
-   term = require("term")
+
+------------------------------------------------------------------------
+-- Ask system for width.
+
+local function l_askSystem(width)
+
+   -- try stty size
+   local r_c = capture("stty size 2> /dev/null")
+   local i, j, rows, columns = r_c:find('(%d+)%s+(%d+)')
+   if (i) then
+      return tonumber(columns)
+   end
+
+   -- Try env var COLUMNS
+   columns = getenv("COLUMNS")
+   if (columns) then
+      return tonumber(columns)
+   end
+
+   -- Try tput cols
+   if (getenv("TERM")) then
+      local result  = capture("tput cols 2> /dev/null")
+      i, j, columns = result:find("^(%d+)")
+      if (i) then
+         return tonumber(columns)
+      end
+   end
+
+   return width
 end
+
+
+--------------------------------------------------------------------------
+-- Returns the number of columns to use as the terminal width.
 
 function TermWidth()
    if (s_width) then
       return s_width
    end
-   s_DFLT  = tonumber(getenv("LMOD_TERM_WIDTH")) or s_DFLT
-   s_width = s_DFLT
-   if (getenv("TERM") and term and term.isatty(io.stderr)) then
-      s_width = tonumber(capture("tput cols")) or s_DFLT
+   local ltw = tonumber(getenv("LMOD_TERM_WIDTH"))  -- Note tonumber(nil) is nil not zero
+   if (ltw) then
+      s_width = ltw
+      return s_width
+   end
+   s_DFLT    = ltw or s_DFLT
+   s_width   = s_DFLT
+   if (haveTermSupport()) then
+      s_width = l_askSystem(s_width)
    end
 
+   local maxW = ltw or math.huge
 
+   s_width = min(maxW, s_width)
    s_width = (s_width > 30) and s_width or 30
 
    return s_width
