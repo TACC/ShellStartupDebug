@@ -38,7 +38,7 @@ local posix     = require("posix")
 require("strict")
 require("capture")
 require("fileOps")
-require("string_trim")
+require("string_utils")
 
 local getenv    = os.getenv
 local io        = io
