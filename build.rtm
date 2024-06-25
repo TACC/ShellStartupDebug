@@ -36,7 +36,7 @@ fi
 host=$(expr $(hostname -f) : "\([^.][^.]*\)")
 
 case $host in
-    mijo | jedrik | vato | rios | vmijo | test-vmijo | bt)
+    mijo | jedrik | vato | rios | vmijo | test-vmijo | bt | bt2)
 	prefixA=("/opt/apps:sudo" ) ;;
     *)
 	prefixA=("$HOME/l/pkg:");;
